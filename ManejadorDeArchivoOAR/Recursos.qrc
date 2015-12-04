@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/Imagenes">
+        <file>new Page.png</file>
+        <file>guardar.png</file>
+        <file>cerrar.png</file>
+        <file>salir.png</file>
+        <file>crear.png</file>
+    </qresource>
+</RCC>
