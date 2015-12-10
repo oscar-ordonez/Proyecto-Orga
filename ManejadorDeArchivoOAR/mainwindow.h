@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include "borrarcampos.h"
+#include "campo.h"
+#include <QList>
+
 namespace Ui {
 class MainWindow;
 }
@@ -32,7 +35,11 @@ private slots:
 
     void on_actionBorrar_Campos_triggered();
 
+    void on_actionSalvar_Archivo_triggered();
+
 private:
+
+    QList<Campo> listaCampos;
     Ui::MainWindow *ui;
     BorrarCampos *borrarCampos;
 };
