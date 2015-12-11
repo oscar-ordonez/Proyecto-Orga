@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>779</width>
-    <height>526</height>
+    <width>793</width>
+    <height>675</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -206,13 +206,68 @@
      </item>
     </widget>
    </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>0</y>
+      <width>131</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>..........Archivos........</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>0</y>
+      <width>131</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>..........Campos..........</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>0</y>
+      <width>161</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>.............Registros.............</string>
+    </property>
+   </widget>
+   <widget class="QFrame" name="panelRegistros">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>310</y>
+      <width>741</width>
+      <height>261</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>779</width>
+     <width>793</width>
      <height>25</height>
     </rect>
    </property>
@@ -277,11 +332,19 @@
    <addaction name="actionCerrar_Archivo"/>
    <addaction name="actionSalir"/>
    <addaction name="actionCrear_Campos"/>
+   <addaction name="actionListar_Campos"/>
+   <addaction name="actionModificar_Campos"/>
+   <addaction name="actionBorrar_Campos"/>
+   <addaction name="actionIntroducir_Registros"/>
+   <addaction name="actionModificar_Registros"/>
+   <addaction name="actionBuscar_Registros"/>
+   <addaction name="actionBorrar_Registros"/>
+   <addaction name="actionListar_Registros"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNuevo_Archivo">
    <property name="icon">
-    <iconset resource="Recursos.qrc">
+    <iconset>
      <normaloff>:/Imagenes/new Page.png</normaloff>:/Imagenes/new Page.png</iconset>
    </property>
    <property name="text">
@@ -290,7 +353,7 @@
   </action>
   <action name="actionSalvar_Archivo">
    <property name="icon">
-    <iconset resource="Recursos.qrc">
+    <iconset>
      <normaloff>:/Imagenes/guardar.png</normaloff>:/Imagenes/guardar.png</iconset>
    </property>
    <property name="text">
@@ -299,7 +362,7 @@
   </action>
   <action name="actionCerrar_Archivo">
    <property name="icon">
-    <iconset resource="Recursos.qrc">
+    <iconset>
      <normaloff>:/Imagenes/cerrar.png</normaloff>:/Imagenes/cerrar.png</iconset>
    </property>
    <property name="text">
@@ -308,7 +371,7 @@
   </action>
   <action name="actionSalir">
    <property name="icon">
-    <iconset resource="Recursos.qrc">
+    <iconset>
      <normaloff>:/Imagenes/salir.png</normaloff>:/Imagenes/salir.png</iconset>
    </property>
    <property name="text">
@@ -317,7 +380,7 @@
   </action>
   <action name="actionCrear_Campos">
    <property name="icon">
-    <iconset resource="Recursos.qrc">
+    <iconset>
      <normaloff>:/Imagenes/crear.png</normaloff>:/Imagenes/crear.png</iconset>
    </property>
    <property name="text">
@@ -325,41 +388,76 @@
    </property>
   </action>
   <action name="actionListar_Campos">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/Imagenes/listar.png</normaloff>:/Imagenes/listar.png</iconset>
+   </property>
    <property name="text">
     <string>Listar Campos</string>
    </property>
   </action>
   <action name="actionModificar_Campos">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/Imagenes/editar.png</normaloff>:/Imagenes/editar.png</iconset>
+   </property>
    <property name="text">
+    <string>Modificar Campos</string>
+   </property>
+   <property name="toolTip">
     <string>Modificar Campos</string>
    </property>
   </action>
   <action name="actionBorrar_Campos">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/Imagenes/delete.png</normaloff>:/Imagenes/delete.png</iconset>
+   </property>
    <property name="text">
     <string>Borrar Campos</string>
    </property>
   </action>
   <action name="actionIntroducir_Registros">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/Imagenes/crear.png</normaloff>:/Imagenes/crear.png</iconset>
+   </property>
    <property name="text">
     <string>Introducir Registros</string>
    </property>
   </action>
   <action name="actionModificar_Registros">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/Imagenes/editar.png</normaloff>:/Imagenes/editar.png</iconset>
+   </property>
    <property name="text">
     <string>Modificar Registros</string>
    </property>
   </action>
   <action name="actionBuscar_Registros">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/Imagenes/visualizar.png</normaloff>:/Imagenes/visualizar.png</iconset>
+   </property>
    <property name="text">
     <string>Buscar Registros</string>
    </property>
   </action>
   <action name="actionBorrar_Registros">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/Imagenes/delete.png</normaloff>:/Imagenes/delete.png</iconset>
+   </property>
    <property name="text">
     <string>Borrar Registros</string>
    </property>
   </action>
   <action name="actionListar_Registros">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/Imagenes/listar.png</normaloff>:/Imagenes/listar.png</iconset>
+   </property>
    <property name="text">
     <string>Listar Registros</string>
    </property>
@@ -391,8 +489,6 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="Recursos.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

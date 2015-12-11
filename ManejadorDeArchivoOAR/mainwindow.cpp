@@ -25,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->panelCampos->setVisible(false);
     ui->tablaCampos->setVisible(false);
+    ui->panelRegistros->setVisible(false);
 }
 
 MainWindow::~MainWindow()
@@ -36,6 +37,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionNuevo_Archivo_triggered()
 {
+    //panels
+    ui->panelRegistros->setVisible(false);
+    ui->panelCampos->setVisible(false);
+
+    //nuevo archivo
     QMessageBox::StandardButton msgbox;
       msgbox = QMessageBox::question(this, "Nuevo archivo", "Desea crear un nuevo archivo?",
                                      QMessageBox::Yes|QMessageBox::No);
@@ -72,8 +78,9 @@ void MainWindow::on_actionSalir_triggered()
 
 void MainWindow::on_actionCrear_Campos_triggered()
 {
+    //panels
+    ui->panelRegistros->setVisible(false);
     ui->panelCampos->setVisible(true);
-
 }
 
 void MainWindow::on_abrirArchivo_clicked()
@@ -296,4 +303,39 @@ void MainWindow::on_actionSalvar_Archivo_triggered()
             //mandar mensajes q no hay archivo abierto
         }
     }
+
+    //panels
+    ui->panelRegistros->setVisible(false);
+    ui->panelCampos->setVisible(false);
+
+}
+
+void MainWindow::on_actionCerrar_Archivo_triggered()
+{
+    //panels
+    ui->panelRegistros->setVisible(false);
+    ui->panelCampos->setVisible(false);
+}
+
+void MainWindow::on_actionListar_Campos_triggered()
+{
+    //panels
+    ui->panelRegistros->setVisible(false);
+    ui->panelCampos->setVisible(true);
+
+
+}
+
+void MainWindow::on_actionModificar_Campos_triggered()
+{
+    //panels
+    ui->panelRegistros->setVisible(false);
+    ui->panelCampos->setVisible(true);
+}
+
+void MainWindow::on_actionIntroducir_Registros_triggered()
+{
+    //panels
+    ui->panelRegistros->setVisible(true);
+    ui->panelCampos->setVisible(false);
 }

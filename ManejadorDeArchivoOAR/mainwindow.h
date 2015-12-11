@@ -37,6 +37,14 @@ private slots:
 
     void on_actionSalvar_Archivo_triggered();
 
+    void on_actionCerrar_Archivo_triggered();
+
+    void on_actionListar_Campos_triggered();
+
+    void on_actionModificar_Campos_triggered();
+
+    void on_actionIntroducir_Registros_triggered();
+
 private:
 
     QList<Campo> listaCampos;

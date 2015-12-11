@@ -4,6 +4,10 @@
         <file>guardar.png</file>
         <file>cerrar.png</file>
         <file>salir.png</file>
+        <file>visualizar.png</file>
+        <file>editar.png</file>
+        <file>delete.png</file>
         <file>crear.png</file>
+        <file>listar.png</file>
     </qresource>
 </RCC>
