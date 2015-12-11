@@ -93,10 +93,7 @@ void MainWindow::on_abrirArchivo_clicked()
 
     ui->tablaCampos->setVisible(true);
     if(caracteres > 0){
-<<<<<<< HEAD
         QMessageBox::information(this,"Abrir archivo","El archivo que usted selecciono ya contiene campos");
-    }else{
-=======
         QString registro, nombreCampo, tipoCampo, tamanoCampo, esLlave, sp="hola\\";
         int ubicacion = 0, row = ui->tablaCampos->rowCount();
         ui->tablaCampos->insertRow(row);
@@ -137,8 +134,6 @@ void MainWindow::on_abrirArchivo_clicked()
         }
         QMessageBox::information(this,"Abrir archivo","El archivo que usted selecciono ya contiene campos");
     }else{
-
->>>>>>> 9d3d2c2acf406234e0dcd4a05792bb91246d9142
         QMessageBox::information(this,"Abrir archivo","El archivo que usted selecciono no contiene campos");
     }
 }
@@ -147,7 +142,6 @@ QStringList titulos;//titulos de los campos
 
 void MainWindow::on_crearCampo_clicked()
 {
-<<<<<<< HEAD
     qDebug() << "le dio click a crear campo";
     ui->tablaCampos->setEditTriggers(false);
     QString nombreCampo = ui->nombreCampo->text();
@@ -194,9 +188,6 @@ void MainWindow::on_crearCampo_clicked()
     ui->nombreCampo->setText("");
     ui->comboBoxTipoCampo->setCurrentIndex(0);
     ui->tamanoCampo->setValue(1);
-=======
-
->>>>>>> 9d3d2c2acf406234e0dcd4a05792bb91246d9142
 }
 
 void MainWindow::on_pushButton_clicked()//accion no utilizada
@@ -211,16 +202,10 @@ void MainWindow::on_addRows_clicked()//accion no utilizada
 
 void MainWindow::on_actionBorrar_Campos_triggered()
 {
-<<<<<<< HEAD
-=======
 
 }
 
-void MainWindow::on_actionSalvar_Archivo_triggered()
-{
->>>>>>> 9d3d2c2acf406234e0dcd4a05792bb91246d9142
 
-}
 
 void MainWindow::on_actionSalvar_Archivo_triggered()
 {
@@ -243,12 +228,12 @@ void MainWindow::on_actionSalvar_Archivo_triggered()
         archivo.close();
 
         if(existe == false){
-            char nombre [30];
+            char nombre [nombreArchivo.length()];
             int tamano = nombreArchivo.length();
             for (int i = 0; i < tamano; i++){
                 nombre[i] = nombreArchivo[i];
             }
-            if(tamano < 30){
+            if(tamano < nombreArchivo.length()){
                 nombre[tamano] = '\0';
             }
             //agregar a archivos creados
