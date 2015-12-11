@@ -89,10 +89,56 @@ void MainWindow::on_abrirArchivo_clicked()
     QString contenido = tsreading.readAll();
     int caracteres = contenido.length();
     qDebug() << "El archivo contine " << caracteres << " caracteres";
+    qDebug() << contenido;
+
     ui->tablaCampos->setVisible(true);
     if(caracteres > 0){
+<<<<<<< HEAD
         QMessageBox::information(this,"Abrir archivo","El archivo que usted selecciono ya contiene campos");
     }else{
+=======
+        QString registro, nombreCampo, tipoCampo, tamanoCampo, esLlave, sp="hola\\";
+        int ubicacion = 0, row = ui->tablaCampos->rowCount();
+        ui->tablaCampos->insertRow(row);
+        for(int i = 0; i < caracteres; i++){
+            if (contenido.at(i) == '|'){
+                break;
+            } else if(contenido.at(i) == ' '){
+                switch (ubicacion){
+                case 0:
+                    ui->tablaCampos->setItem(row,ubicacion,new QTableWidgetItem(registro));
+                    ubicacion++;
+                    registro = "";
+                    break;
+                case 1:
+                    ui->tablaCampos->setItem(row,ubicacion,new QTableWidgetItem(registro));
+                    ubicacion++;
+                    registro = "";
+                    break;
+                case 2:
+                    ui->tablaCampos->setItem(row,ubicacion,new QTableWidgetItem(registro));
+                    ubicacion++;
+                    registro = "";
+                    break;
+                case 3:
+                    ui->tablaCampos->setItem(row,ubicacion,new QTableWidgetItem(registro));
+                    row = ui->tablaCampos->rowCount();
+                    ui->tablaCampos->insertRow(row);
+                    ubicacion = 0;
+                    registro = "";
+                    break;
+                }
+                //ui->tablaCampos->setItem(row,ubicacion,new QTableWidgetItem(registro));
+            } else if(contenido.at(i) == sp.at(sp.size()-1)){
+                qDebug() << "entro";
+            } else if (contenido.at(i) != ' '){
+                registro.append(contenido.at(i));
+            }
+        }
+        QMessageBox::information(this,"Abrir archivo","El archivo que usted selecciono ya contiene campos");
+    }else{
+
+>>>>>>> 9d3d2c2acf406234e0dcd4a05792bb91246d9142
         QMessageBox::information(this,"Abrir archivo","El archivo que usted selecciono no contiene campos");
     }
 }
@@ -101,6 +147,7 @@ QStringList titulos;//titulos de los campos
 
 void MainWindow::on_crearCampo_clicked()
 {
+<<<<<<< HEAD
     qDebug() << "le dio click a crear campo";
     ui->tablaCampos->setEditTriggers(false);
     QString nombreCampo = ui->nombreCampo->text();
@@ -147,9 +194,12 @@ void MainWindow::on_crearCampo_clicked()
     ui->nombreCampo->setText("");
     ui->comboBoxTipoCampo->setCurrentIndex(0);
     ui->tamanoCampo->setValue(1);
+=======
+
+>>>>>>> 9d3d2c2acf406234e0dcd4a05792bb91246d9142
 }
 
-void MainWindow::on_pushButton_clicked()//action no utilizada
+void MainWindow::on_pushButton_clicked()//accion no utilizada
 {
 
 }
@@ -161,6 +211,14 @@ void MainWindow::on_addRows_clicked()//accion no utilizada
 
 void MainWindow::on_actionBorrar_Campos_triggered()
 {
+<<<<<<< HEAD
+=======
+
+}
+
+void MainWindow::on_actionSalvar_Archivo_triggered()
+{
+>>>>>>> 9d3d2c2acf406234e0dcd4a05792bb91246d9142
 
 }
 
