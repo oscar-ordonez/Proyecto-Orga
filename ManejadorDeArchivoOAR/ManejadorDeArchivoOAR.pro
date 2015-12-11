@@ -15,14 +15,17 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     borrarcampos.cpp \
-    campo.cpp
+    campo.cpp \
+    listarcampos.cpp
 
 HEADERS  += mainwindow.h \
     borrarcampos.h \
-    campo.h
+    campo.h \
+    listarcampos.h
 
 FORMS    += mainwindow.ui \
-    borrarcampos.ui
+    borrarcampos.ui \
+    listarcampos.ui
 
 RESOURCES += \
     Recursos.qrc

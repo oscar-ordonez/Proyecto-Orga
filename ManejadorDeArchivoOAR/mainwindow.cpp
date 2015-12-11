@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "borrarcampos.h"
+#include "listarcampos.h"
 #include "ui_mainwindow.h"
 #include <iostream>
 #include <QDebug>
@@ -107,21 +108,24 @@ void MainWindow::on_abrirArchivo_clicked()
         for(int i = 0; i < caracteres; i++){
             if (contenido.at(i) == '|'){
                 break;
-            } else if(contenido.at(i) == ' '){
+            } else if(contenido.at(i) == ' ' || contenido.at(i) == '\n'){
                 switch (ubicacion){
                 case 0:
                     ui->tablaCampos->setItem(row,ubicacion,new QTableWidgetItem(registro));
                     ubicacion++;
+                    nombreCampo = registro;
                     registro = "";
                     break;
                 case 1:
                     ui->tablaCampos->setItem(row,ubicacion,new QTableWidgetItem(registro));
                     ubicacion++;
+                    tipoCampo = registro;
                     registro = "";
                     break;
                 case 2:
                     ui->tablaCampos->setItem(row,ubicacion,new QTableWidgetItem(registro));
                     ubicacion++;
+                    tamanoCampo = registro;
                     registro = "";
                     break;
                 case 3:
@@ -129,13 +133,15 @@ void MainWindow::on_abrirArchivo_clicked()
                     row = ui->tablaCampos->rowCount();
                     ui->tablaCampos->insertRow(row);
                     ubicacion = 0;
+                    esLlave = registro;
                     registro = "";
+                    /*if(esLlave == "Si"){
+                        listaCampos.append(new Campo(nombreCampo, tipoCampo, ));
+                    }*/
                     break;
                 }
                 //ui->tablaCampos->setItem(row,ubicacion,new QTableWidgetItem(registro));
-            } else if(contenido.at(i) == sp.at(sp.size()-1)){
-                qDebug() << "entro";
-            } else if (contenido.at(i) != ' '){
+            }else if (contenido.at(i) != ' '){
                 registro.append(contenido.at(i));
             }
         }
@@ -322,7 +328,8 @@ void MainWindow::on_actionListar_Campos_triggered()
     //panels
     ui->panelRegistros->setVisible(false);
     ui->panelCampos->setVisible(true);
-
+    ListarCampos listarCampos;
+    listarCampos.llenarTabla(listaCampos);
 
 }
 
