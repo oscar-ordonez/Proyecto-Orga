@@ -14,10 +14,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    borrarcampos.cpp
+    borrarcampos.cpp \
+    campo.cpp
 
 HEADERS  += mainwindow.h \
-    borrarcampos.h
+    borrarcampos.h \
+    campo.h
 
 FORMS    += mainwindow.ui \
     borrarcampos.ui
