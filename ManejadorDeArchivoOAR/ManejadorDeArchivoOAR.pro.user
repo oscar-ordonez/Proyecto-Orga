@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<<<<<<< HEAD
-<!-- Written by QtCreator 3.0.1, 2015-12-09T16:19:24. -->
-=======
-<!-- Written by QtCreator 3.5.1, 2015-12-11T02:04:23. -->
->>>>>>> 9d3d2c2acf406234e0dcd4a05792bb91246d9142
+<!-- Written by QtCreator 3.0.1, 2015-12-11T16:36:17. -->
 <qtcreator>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -233,11 +229,7 @@
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">ManejadorDeArchivoOAR</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
-<<<<<<< HEAD
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/nelson/Escritorio/proyecto verdadero/ManejadorDeArchivoOAR/ManejadorDeArchivoOAR.pro</value>
-=======
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/oscar-ordonez/Documentos/proyecto verdadero/ManejadorDeArchivoOAR/ManejadorDeArchivoOAR.pro</value>
->>>>>>> 9d3d2c2acf406234e0dcd4a05792bb91246d9142
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.CommandLineArguments"></value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.ProFile">ManejadorDeArchivoOAR.pro</value>
     <value type="bool" key="Qt4ProjectManager.Qt4RunConfiguration.UseDyldImageSuffix">false</value>

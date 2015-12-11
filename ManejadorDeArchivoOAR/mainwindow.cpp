@@ -12,6 +12,7 @@
 #include <QTextStream>
 #include <fstream>
 #include <cstring>
+#include <QTextStream>
 
 
 //algunas variables necearias
@@ -217,9 +218,9 @@ void MainWindow::on_actionBorrar_Campos_triggered()
 void MainWindow::on_actionSalvar_Archivo_triggered()
 {
     if(archivoAbierto != "" && listaCampos.count() > 0){
-        string nombreArchivo = (archivoAbierto + "Datos").toStdString();
-        QString nombreIndice = (archivoAbierto + "Indice");
-        QString nombreIndiceArbol = (archivoAbierto + "IndiceArbol");
+        string nombreArchivo = (archivoAbierto + "Dato").toStdString();
+        QString nombreIndice = (archivoAbierto + "Indx");
+        QString nombreIndiceArbol = (archivoAbierto + "IAbl");
 
         ifstream archivo ("./Archivos/todosArchivos.ncr");
         bool existe = false;
@@ -243,6 +244,7 @@ void MainWindow::on_actionSalvar_Archivo_triggered()
             if(tamano < nombreArchivo.length()){
                 nombre[tamano] = '\0';
             }
+
             //agregar a archivos creados
             ofstream archivo ("./Archivos/todosArchivos.ncr");
             archivo << nombreArchivo << endl;
@@ -338,4 +340,131 @@ void MainWindow::on_actionIntroducir_Registros_triggered()
     //panels
     ui->panelRegistros->setVisible(true);
     ui->panelCampos->setVisible(false);
+
+    qDebug() << "Click en crear registros\nCargando Archivos a comboBox";
+    numHead = 0;
+    numEOSE = 0;
+    ifstream archivo("./Archivos/todosArchivos.ncr");
+    while(archivo.good()){
+        string dato;
+        archivo >> dato;
+        QString m = QString::fromStdString(dato);
+        qDebug() << "archivo lee:" + QString::fromStdString(dato) + "\n Tamaño:" + QString::fromStdString(dato).length();
+        if(QString::fromStdString(dato).contains(" ")){
+            m = QString::fromStdString(dato).replace(" ","_");
+        }
+        qDebug() << m;
+        ui->comboBoxArchivosRegistros->addItem(QString::fromStdString(dato));
+    }
+    listaCamposAbiertos.clear();
+    listaCamposLlenados.clear();
+    ui->comboBoxArchivosRegistros->removeItem(ui->comboBoxArchivosRegistros->count()-1);
+}
+
+void MainWindow::on_abrirArchivoRegistro_clicked()//Metodo no utilizado
+{
+
+}
+
+void MainWindow::on_comboBoxArchivosRegistros_activated(const QString &arg1)
+{
+    fileArchivo.close();
+    fileIndice.close();
+
+    ui->labelRegistoNumero->setText("N/A");
+    ui->labelRegistoNombre->setText("N/A");
+    ui->labelRegistoTipo->setText("N/A");
+    ui->labelRegistoTamano->setText("N/A");
+    ui->labelRegistoLlave->setText("N/A");
+
+    listaLlaves.clear();
+    listaCamposAbiertos.clear();
+
+    numHead = 0;
+    numEOSE = 0;
+    numCampoLlave = -1;
+    numOSH = 0;
+
+    fileArchivo.setFileName(ui->comboBoxArchivosRegistros->currentText());
+    if(!fileArchivo.open(QIODevice::ReadWrite | QIODevice::Text)){
+        return;
+    }
+
+    QTextStream textStream (&fileArchivo);
+    QString linea;
+    while (!textStream.atEnd()) {
+        linea = textStream.readLine();
+        numEOSE += linea.toUtf8().length()+1;
+        if(linea =="|")
+            break;
+        QStringList stringList = linea.split(" ");
+        bool llave =false;
+        if(stringList[3]=="Si"){
+           llave = true;
+           numCampoLlave = listaCamposAbiertos.count();
+        }
+        listaCamposAbiertos.append(Campo(stringList[0],stringList[1],stringList[2].toInt(),llave));
+    }
+
+    numOSH = numEOSE;
+    linea = textStream.readLine();
+    numEOSE += linea.length()+1;
+    numHead = linea.toInt();
+    numEOSE +=1;
+
+    ui->labelRegistoNumero->setText("1");
+    ui->labelRegistoNombre->setText(listaCamposAbiertos[0].getNombreCampo());
+    ui->labelRegistoTipo->setText(listaCamposAbiertos[0].getTipoCampo());
+    ui->labelRegistoTamano->setText(QString::number(listaCamposAbiertos[0].getTamanoCampo()));
+
+    if(listaCamposAbiertos[0].getEsLlave())
+        ui->labelEsLlave->setText("Si");
+    else
+        ui->labelEsLlave->setText("No");
+
+    QString mask;
+    if(listaCamposAbiertos[0].getTipoCampo() == "INTF"){
+      for(int i=0;i<listaCamposAbiertos[0].getTamanoCampo();i++)
+           mask += "0";
+
+      ui->datoRegistro->setInputMask(mask + "\0");
+    }else{
+      ui->datoRegistro->setInputMask("");
+      ui->datoRegistro->setMaxLength(listaCamposAbiertos[0].getTamanoCampo());
+    }
+
+    loadKeys();
+    if(numCampoLlave != -1){
+        QString nombreindice = ui->comboBoxArchivosRegistros->currentText();
+        nombreindice[nombreindice.length()-4] = 'I',nombreindice[nombreindice.length()-3] = 'n';
+        nombreindice[nombreindice.length()-2] = 'd',nombreindice[nombreindice.length()-1] = 'x';
+        fileIndice.setFileName(nombreindice);
+        if (!fileIndice.open(QIODevice::ReadWrite | QIODevice::Text))
+             return;
+     }
+}
+
+void MainWindow::loadKeys(){
+    int recorrido = 0;
+    for(int i=0;i < numCampoLlave;i ++){
+         recorrido += listaCamposAbiertos[i].getTamanoCampo();
+    }
+
+    if(numCampoLlave != -1){
+        fileArchivo.seek(0);
+        QTextStream textStream (&fileArchivo);
+        QString linea = textStream.readLine();
+        bool comienzo = false;
+        while (!linea.isNull()) {
+            linea = textStream.readLine();
+            if(comienzo){
+               if(linea[0]!='*'){
+                    listaLlaves.append(linea.mid(recorrido,listaCamposAbiertos[numCampoLlave].getTamanoCampo()));
+               }
+            }
+            if(linea=="$"){
+                comienzo = false;
+            }
+        }
+    }
 }
