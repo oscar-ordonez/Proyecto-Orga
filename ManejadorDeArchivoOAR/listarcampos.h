@@ -16,6 +16,9 @@ public:
     void llenarTabla(QList <Campo>);
     ~ListarCampos();
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::ListarCampos *ui;
 };

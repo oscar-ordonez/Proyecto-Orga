@@ -92,7 +92,7 @@ void MainWindow::on_abrirArchivo_clicked()
     QFile archivo (direccion);
     archivo.open(QIODevice::ReadOnly);
     QTextStream tsreading (&archivo);
-
+    Campo temporalCampo;
     //verificar si hay cosas escritas en el archivo
     QString contenido = tsreading.readAll();
     int caracteres = contenido.length();
@@ -135,9 +135,17 @@ void MainWindow::on_abrirArchivo_clicked()
                     ubicacion = 0;
                     esLlave = registro;
                     registro = "";
-                    /*if(esLlave == "Si"){
-                        listaCampos.append(new Campo(nombreCampo, tipoCampo, ));
-                    }*/
+                    temporalCampo.setNombreCampo(nombreCampo);
+                    temporalCampo.setTipoCampo(tipoCampo);
+                    temporalCampo.setTamanoCampo(tamanoCampo.toInt());
+                    if(esLlave == "Si"){
+                        temporalCampo.setEsLlave(true);
+                        ui->labelEsLlave->setVisible(false);
+                        ui->comboBoxEsLlave->setVisible(false);
+                    }else{
+                        temporalCampo.setEsLlave(false);
+                    }
+                    listaCampos.append(temporalCampo);
                     break;
                 }
                 //ui->tablaCampos->setItem(row,ubicacion,new QTableWidgetItem(registro));
@@ -330,7 +338,8 @@ void MainWindow::on_actionListar_Campos_triggered()
     ui->panelCampos->setVisible(true);
     ListarCampos listarCampos;
     listarCampos.llenarTabla(listaCampos);
-
+    listarCampos.setModal(true);
+    listarCampos.exec();
 }
 
 void MainWindow::on_actionModificar_Campos_triggered()
