@@ -5,6 +5,7 @@
 #include "borrarcampos.h"
 #include "campo.h"
 #include <QList>
+#include <QFile>
 
 namespace Ui {
 class MainWindow;
@@ -45,9 +46,24 @@ private slots:
 
     void on_actionIntroducir_Registros_triggered();
 
+    void on_abrirArchivoRegistro_clicked();
+
+    void on_comboBoxArchivosRegistros_activated(const QString &arg1);
+
+    void loadKeys();
+
 private:
 
     QList<Campo> listaCampos;
+    QList<QString> listaLlaves;
+    QList<Campo> listaCamposAbiertos;
+    QList<QString> listaCamposLlenados;
+    int numCampoLlave;
+    int numHead;
+    int numEOSE;//endoffsetestructure
+    int numOSH; //offsethead
+    QFile fileArchivo;
+    QFile fileIndice;
     Ui::MainWindow *ui;
     BorrarCampos *borrarCampos;
 };

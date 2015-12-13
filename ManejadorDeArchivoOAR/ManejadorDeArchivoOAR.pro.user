@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
+<<<<<<< HEAD
 <!-- Written by QtCreator 3.5.1, 2015-12-11T16:57:45. -->
+=======
+<!-- Written by QtCreator 3.0.1, 2015-12-11T16:36:17. -->
+>>>>>>> 1b221970e027bda2618db9a59fc4dd54a5ccaa22
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -240,7 +244,11 @@
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">ManejadorDeArchivoOAR</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
+<<<<<<< HEAD
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/oscar-ordonez/Documentos/Organizacion de Archivos/Proyecto Orga/ManejadorDeArchivoOAR/ManejadorDeArchivoOAR.pro</value>
+=======
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/nelson/Escritorio/proyecto verdadero/ManejadorDeArchivoOAR/ManejadorDeArchivoOAR.pro</value>
+>>>>>>> 1b221970e027bda2618db9a59fc4dd54a5ccaa22
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.CommandLineArguments"></value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.ProFile">ManejadorDeArchivoOAR.pro</value>
     <value type="bool" key="Qt4ProjectManager.Qt4RunConfiguration.UseDyldImageSuffix">false</value>

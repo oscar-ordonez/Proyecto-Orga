@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>793</width>
-    <height>675</height>
+    <width>800</width>
+    <height>701</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -251,7 +251,7 @@
       <x>30</x>
       <y>310</y>
       <width>741</width>
-      <height>261</height>
+      <height>291</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -260,6 +260,192 @@
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>50</y>
+       <width>111</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Numero:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_8">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>80</y>
+       <width>121</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Nombre Campo:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_9">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>110</y>
+       <width>111</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Tipo de Campo:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_10">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>140</y>
+       <width>141</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Tamañp de Campo:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_11">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>170</y>
+       <width>131</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Llave:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelRegistoNumero">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>50</y>
+       <width>141</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>N/A</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelRegistoNombre">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>80</y>
+       <width>141</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>N/A</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelRegistoTipo">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>110</y>
+       <width>141</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>N/A</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelRegistoTamano">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>140</y>
+       <width>141</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>N/A</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labelRegistoLlave">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>170</y>
+       <width>141</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>N/A</string>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="tableWidget">
+     <property name="geometry">
+      <rect>
+       <x>340</x>
+       <y>50</y>
+       <width>391</width>
+       <height>231</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_17">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>220</y>
+       <width>41</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Dato:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="datoRegistro">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>210</y>
+       <width>251</width>
+       <height>27</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>250</y>
+       <width>99</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Siguiente</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBoxArchivosRegistros">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>10</y>
+       <width>691</width>
+       <height>27</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -267,7 +453,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>793</width>
+     <width>800</width>
      <height>25</height>
     </rect>
    </property>
@@ -344,7 +530,7 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNuevo_Archivo">
    <property name="icon">
-    <iconset>
+    <iconset resource="Recursos.qrc">
      <normaloff>:/Imagenes/new Page.png</normaloff>:/Imagenes/new Page.png</iconset>
    </property>
    <property name="text">
@@ -353,7 +539,7 @@
   </action>
   <action name="actionSalvar_Archivo">
    <property name="icon">
-    <iconset>
+    <iconset resource="Recursos.qrc">
      <normaloff>:/Imagenes/guardar.png</normaloff>:/Imagenes/guardar.png</iconset>
    </property>
    <property name="text">
@@ -362,7 +548,7 @@
   </action>
   <action name="actionCerrar_Archivo">
    <property name="icon">
-    <iconset>
+    <iconset resource="Recursos.qrc">
      <normaloff>:/Imagenes/cerrar.png</normaloff>:/Imagenes/cerrar.png</iconset>
    </property>
    <property name="text">
@@ -371,7 +557,7 @@
   </action>
   <action name="actionSalir">
    <property name="icon">
-    <iconset>
+    <iconset resource="Recursos.qrc">
      <normaloff>:/Imagenes/salir.png</normaloff>:/Imagenes/salir.png</iconset>
    </property>
    <property name="text">
@@ -380,7 +566,7 @@
   </action>
   <action name="actionCrear_Campos">
    <property name="icon">
-    <iconset>
+    <iconset resource="Recursos.qrc">
      <normaloff>:/Imagenes/crear.png</normaloff>:/Imagenes/crear.png</iconset>
    </property>
    <property name="text">
@@ -389,7 +575,7 @@
   </action>
   <action name="actionListar_Campos">
    <property name="icon">
-    <iconset>
+    <iconset resource="Recursos.qrc">
      <normaloff>:/Imagenes/listar.png</normaloff>:/Imagenes/listar.png</iconset>
    </property>
    <property name="text">
@@ -398,7 +584,7 @@
   </action>
   <action name="actionModificar_Campos">
    <property name="icon">
-    <iconset>
+    <iconset resource="Recursos.qrc">
      <normaloff>:/Imagenes/editar.png</normaloff>:/Imagenes/editar.png</iconset>
    </property>
    <property name="text">
@@ -410,7 +596,7 @@
   </action>
   <action name="actionBorrar_Campos">
    <property name="icon">
-    <iconset>
+    <iconset resource="Recursos.qrc">
      <normaloff>:/Imagenes/delete.png</normaloff>:/Imagenes/delete.png</iconset>
    </property>
    <property name="text">
@@ -419,7 +605,7 @@
   </action>
   <action name="actionIntroducir_Registros">
    <property name="icon">
-    <iconset>
+    <iconset resource="Recursos.qrc">
      <normaloff>:/Imagenes/crear.png</normaloff>:/Imagenes/crear.png</iconset>
    </property>
    <property name="text">
@@ -428,7 +614,7 @@
   </action>
   <action name="actionModificar_Registros">
    <property name="icon">
-    <iconset>
+    <iconset resource="Recursos.qrc">
      <normaloff>:/Imagenes/editar.png</normaloff>:/Imagenes/editar.png</iconset>
    </property>
    <property name="text">
@@ -437,7 +623,7 @@
   </action>
   <action name="actionBuscar_Registros">
    <property name="icon">
-    <iconset>
+    <iconset resource="Recursos.qrc">
      <normaloff>:/Imagenes/visualizar.png</normaloff>:/Imagenes/visualizar.png</iconset>
    </property>
    <property name="text">
@@ -446,7 +632,7 @@
   </action>
   <action name="actionBorrar_Registros">
    <property name="icon">
-    <iconset>
+    <iconset resource="Recursos.qrc">
      <normaloff>:/Imagenes/delete.png</normaloff>:/Imagenes/delete.png</iconset>
    </property>
    <property name="text">
@@ -455,7 +641,7 @@
   </action>
   <action name="actionListar_Registros">
    <property name="icon">
-    <iconset>
+    <iconset resource="Recursos.qrc">
      <normaloff>:/Imagenes/listar.png</normaloff>:/Imagenes/listar.png</iconset>
    </property>
    <property name="text">
@@ -489,6 +675,8 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="Recursos.qrc"/>
+ </resources>
  <connections/>
 </ui>
