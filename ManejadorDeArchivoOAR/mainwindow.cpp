@@ -262,7 +262,7 @@ void MainWindow::on_actionSalvar_Archivo_triggered()
     if(archivoAbierto != "" && listaCampos.count() > 0){
     string nombreArchivo = (archivoAbierto + "Dato").toStdString();
     QString nombreIndice = (archivoAbierto + "Indx");
-    QString nombreIndiceArbol = (archivoAbierto + "IAbl");
+    QString nombreIndiceArbol = (archivoAbierto + "InAbl");
 
     ifstream archivo ("./Archivos/todosArchivos.ncr");
     bool existe = false;
@@ -1069,9 +1069,9 @@ void MainWindow::on_botonIndexar_clicked()
         else
             Insercion();
 
-        QString nombreindicea = ui->comboBoxIndexar->currentText()+"I";
-        nombreindicea[nombreindicea.length()-5] = 'n',nombreindicea[nombreindicea.length()-4] = 'A';
-        nombreindicea[nombreindicea.length()-3] = 'b',nombreindicea[nombreindicea.length()-2] = 'l';
+        QString nombreindicea = ui->comboBoxIndexar->currentText()+"l";
+        nombreindicea[nombreindicea.length()-5] = 'I',nombreindicea[nombreindicea.length()-4] = 'n';
+        nombreindicea[nombreindicea.length()-3] = 'A',nombreindicea[nombreindicea.length()-2] = 'b';
         QFile filea(nombreindicea);
         if (!filea.open(QIODevice::ReadWrite | QIODevice::Text))
          return;
@@ -1319,14 +1319,15 @@ void MainWindow::on_comboBoxCampoComun_activated(const QString &arg1)
          int cantr=0;
 
          if(campo1==false){
-             nombreindicea = file2.fileName()+"x";
+             nombreindicea = file2.fileName()+"l";
+             qDebug() << "File name: " << nombreindicea;
              cantr=this->campo2[columnaeliminar-this->campo1.count()].getTamanoCampo();
          }else{
-             nombreindicea = file1.fileName()+"x";
+             nombreindicea = file1.fileName()+"l";
              cantr=this->campo1[columnaeliminar-this->campo2.count()].getTamanoCampo();
          }//fin del else
-         nombreindicea[nombreindicea.length()-5] = 'b',nombreindicea[nombreindicea.length()-4] = 't';
-         nombreindicea[nombreindicea.length()-3] = 'i',nombreindicea[nombreindicea.length()-2] = 'd';
+         nombreindicea[nombreindicea.length()-5] = 'I',nombreindicea[nombreindicea.length()-4] = 'n';
+         nombreindicea[nombreindicea.length()-3] = 'A',nombreindicea[nombreindicea.length()-2] = 'b';
          QFile filea(nombreindicea);
          if (!filea.open(QIODevice::ReadWrite | QIODevice::Text))
           return;
