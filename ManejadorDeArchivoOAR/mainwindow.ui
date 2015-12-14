@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1217</width>
-    <height>709</height>
+    <width>1293</width>
+    <height>764</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -681,8 +681,8 @@
    <widget class="QFrame" name="panelIndexar">
     <property name="geometry">
      <rect>
-      <x>780</x>
-      <y>320</y>
+      <x>30</x>
+      <y>600</y>
       <width>431</width>
       <height>71</height>
      </rect>
@@ -717,13 +717,121 @@
      </property>
     </widget>
    </widget>
+   <widget class="QFrame" name="panelCruzar">
+    <property name="geometry">
+     <rect>
+      <x>780</x>
+      <y>320</y>
+      <width>501</width>
+      <height>341</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="label_12">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>70</y>
+       <width>171</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Seleccione un Archivo B:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_13">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>171</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Seleccione un Archivo A:</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBoxCruzar1">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>441</width>
+       <height>27</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBoxCruzar2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>90</y>
+       <width>441</width>
+       <height>27</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="botonCruzar">
+     <property name="geometry">
+      <rect>
+       <x>390</x>
+       <y>60</y>
+       <width>99</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Cruzar</string>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="cruzarTabla">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>161</y>
+       <width>471</width>
+       <height>161</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBoxCampoComun">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>120</y>
+       <width>181</width>
+       <height>27</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_14">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>130</y>
+       <width>141</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Campos en comun</string>
+     </property>
+    </widget>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1217</width>
+     <width>1293</width>
      <height>25</height>
     </rect>
    </property>
@@ -737,9 +845,10 @@
    </widget>
    <widget class="QMenu" name="menuIndices">
     <property name="title">
-     <string>Indices</string>
+     <string>Acciones</string>
     </property>
     <addaction name="actionReindexar_Archivos"/>
+    <addaction name="actionCruzar_Arbol_B"/>
    </widget>
    <widget class="QMenu" name="menuRegistros">
     <property name="title">
@@ -796,6 +905,7 @@
    <addaction name="actionBorrar_Registros"/>
    <addaction name="actionListar_Registros"/>
    <addaction name="actionReindexar_Archivos"/>
+   <addaction name="actionCruzar_Arbol_B"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNuevo_Archivo">
@@ -943,6 +1053,15 @@
   <action name="actionExportar_JSON">
    <property name="text">
     <string>Exportar JSON</string>
+   </property>
+  </action>
+  <action name="actionCruzar_Arbol_B">
+   <property name="icon">
+    <iconset resource="Recursos.qrc">
+     <normaloff>:/Imagenes/arbol.png</normaloff>:/Imagenes/arbol.png</iconset>
+   </property>
+   <property name="text">
+    <string>Cruzar Arbol B</string>
    </property>
   </action>
  </widget>

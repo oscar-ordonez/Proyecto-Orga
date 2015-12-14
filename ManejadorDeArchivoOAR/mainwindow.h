@@ -84,6 +84,16 @@ private slots:
     void InsercionE();
 
     void Insercion();
+    void on_actionCruzar_Arbol_B_triggered();
+
+    void on_comboBoxCruzar1_activated(const QString &arg1);
+
+    void on_comboBoxCruzar2_activated(const QString &arg1);
+
+    void on_botonCruzar_clicked();
+
+    void on_comboBoxCampoComun_activated(const QString &arg1);
+
 private:
 
     QList<Campo> listaCampos;
@@ -98,6 +108,11 @@ private:
     QFile fileIndice;
     QList<Index> indexList;
     ArbolB arbolB;
+    QList <Campo> campo1;
+    QList <Campo> campo2;
+    QFile file1;
+    QFile file2;
+
     Ui::MainWindow *ui;
     BorrarCampos *borrarCampos;
 };

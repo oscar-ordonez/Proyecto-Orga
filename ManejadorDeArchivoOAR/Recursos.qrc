@@ -10,5 +10,6 @@
         <file>crear.png</file>
         <file>listar.png</file>
         <file>indices.png</file>
+        <file>arbol.png</file>
     </qresource>
 </RCC>

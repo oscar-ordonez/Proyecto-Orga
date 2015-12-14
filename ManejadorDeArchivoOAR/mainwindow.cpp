@@ -260,98 +260,96 @@ void MainWindow::on_actionBorrar_Campos_triggered()
 void MainWindow::on_actionSalvar_Archivo_triggered()
 {
     if(archivoAbierto != "" && listaCampos.count() > 0){
-        string nombreArchivo = (archivoAbierto + "Dato").toStdString();
-        QString nombreIndice = (archivoAbierto + "Indx");
-        QString nombreIndiceArbol = (archivoAbierto + "InAbl");
+    string nombreArchivo = (archivoAbierto + "Dato").toStdString();
+    QString nombreIndice = (archivoAbierto + "Indx");
+    QString nombreIndiceArbol = (archivoAbierto + "IAbl");
 
-        ifstream archivo ("./Archivos/todosArchivos.ncr");
-        bool existe = false;
+    ifstream archivo ("./Archivos/todosArchivos.ncr");
+    bool existe = false;
 
-        //verificar que el archivo que se creo no existe
-        while(archivo.good()){
-            string temp;
-            archivo >> temp;
-            if(temp == nombreArchivo){
-                existe = true;
-            }
+    //verificar que el archivo que se creo no existe
+    while(archivo.good()){
+        string temp;
+        archivo >> temp;
+        if(temp == nombreArchivo){
+            existe = true;
         }
+    }
+    archivo.close();
+
+    if(existe == false){
+        char nombre [nombreArchivo.length()];
+        int tamano = nombreArchivo.length();
+        for (int i = 0; i < tamano; i++){
+            nombre[i] = nombreArchivo[i];
+        }
+        if(tamano < nombreArchivo.length()){
+            nombre[tamano] = '\0';
+        }
+
+        //agregar a archivos creados
+        ofstream archivo ("./Archivos/todosArchivos.ncr");
+        archivo << nombreArchivo << endl;
         archivo.close();
 
-        if(existe == false){
-            char nombre [nombreArchivo.length()];
-            int tamano = nombreArchivo.length();
-            for (int i = 0; i < tamano; i++){
-                nombre[i] = nombreArchivo[i];
+        //escribir estructura al archivo
+        QString data;
+        bool llave = false;
+        foreach(Campo campo, listaCampos){
+            data += campo.getNombreCampo() + " " + campo.getTipoCampo() + " " + QString::number(campo.getTamanoCampo())+" ";
+            if(campo.getEsLlave()){
+                 data += "Si\n";
+                 llave = true;
+            }else{
+                 data += "No\n";
             }
-            if(tamano < nombreArchivo.length()){
-                nombre[tamano] = '\0';
-            }
-
-            //agregar a archivos creados
-            ofstream archivo ("./Archivos/todosArchivos.ncr");
-            archivo << nombreArchivo << endl;
-            archivo.close();
-
-            //escribir estructura al archivo
-            QString data;
-            bool llave = false;
-            foreach(Campo campo, listaCampos){
-                data += campo.getNombreCampo() + " " + campo.getTipoCampo() + " " + QString::number(campo.getTamanoCampo())+" ";
-                if(campo.getEsLlave()){
-                    data += "Si\n";
-                    llave = true;
-                }else{
-                    data += "No\n";
-                }
-            }
-            data += "|\n";
-            data += "-1    \n";
-            data += "$\n";
-
-            ofstream file(nombre);
-            file << data.toStdString();
-            file.close();
-
-            //indices
-            if(llave){
-                //indice normal
-                QFile fileIndice(nombreIndice);
-                fileIndice.open(QIODevice::ReadWrite | QIODevice::Text);
-                fileIndice.close();
-                //indice con arbol b
-                QFile fileIndiceArbol(nombreIndiceArbol);
-                fileIndiceArbol.open(QIODevice::ReadWrite | QIODevice::Text);
-                fileIndiceArbol.close();
-            }
-
-            //borrar tabla
-            foreach(Campo campo, listaCampos){
-                ui->tablaCampos->removeRow(0);
-                listaCampos.removeAt(0);
-            }
-
-            if(ui->comboBoxEsLlave->isVisible() == false){
-                ui->comboBoxEsLlave->setVisible(true);
-                ui->comboBoxEsLlave->addItem("Si");
-            }
-
-        }else{
-            //mesnaje error que el archivo ya existe
         }
-        ui->comboBoxEsLlave->setEnabled(true);
-        ui->comboBoxEsLlave->setItemText(0,"Si");
+        data += "|\n";
+        data += "-1    \n";
+        data += "$\n";
+        ofstream file(nombre);
+        file << data.toStdString();
+        file.close();
+
+        //indices
+        if(llave){
+        //indice normal
+        QFile fileIndice(nombreIndice);
+        fileIndice.open(QIODevice::ReadWrite | QIODevice::Text);
+        fileIndice.close();
+        //indice con arbol b
+        QFile fileIndiceArbol(nombreIndiceArbol);
+            fileIndiceArbol.open(QIODevice::ReadWrite | QIODevice::Text);
+            fileIndiceArbol.close();
+        }
+
+        //borrar tabla
+        foreach(Campo campo, listaCampos){
+            ui->tablaCampos->removeRow(0);
+            listaCampos.removeAt(0);
+        }
+
+        if(ui->comboBoxEsLlave->isVisible() == false){
+            ui->comboBoxEsLlave->setVisible(true);
+            ui->comboBoxEsLlave->addItem("Si");
+        }
+
     }else{
-        if(listaCampos.count() == 0){
+         //mesnaje error que el archivo ya existe
+    }
+    ui->comboBoxEsLlave->setEnabled(true);
+    ui->comboBoxEsLlave->setItemText(0,"Si");
+    }else{
+         if(listaCampos.count() == 0){
             //mandar mensajes q no hay campos
-        }else{
+         }else{
             //mandar mensajes q no hay archivo abierto
-        }
+         }
     }
 
     //panels
     ui->panelRegistros->setVisible(false);
     ui->panelCampos->setVisible(false);
-
 }
 
 void MainWindow::on_actionCerrar_Archivo_triggered()
@@ -1145,3 +1143,332 @@ void MainWindow::Insercion(){
     indexList[j+1]=temp;
     }
 }//fin metodo ordenar
+
+void MainWindow::on_actionCruzar_Arbol_B_triggered()
+{
+    file1.close();
+    file2.close();
+    campo1.clear();
+    campo2.clear();
+    ui->comboBoxCruzar1->clear();
+    ui->comboBoxCruzar2->clear();
+    for(int i=ui->cruzarTabla->rowCount()-1;i>=0;i--)
+        ui->cruzarTabla->removeRow(i);
+    for(int i=ui->cruzarTabla->columnCount();i>=0;i--)
+        ui->cruzarTabla->removeColumn(i);
+    ifstream verificar("./Archivos/todosArchivos.ncr");
+    while(verificar.good()){
+        string archivo;
+        verificar >> archivo;
+        ui->comboBoxCruzar1->addItem(QString::fromStdString(archivo).replace("_"," "));
+        ui->comboBoxCruzar2->addItem(QString::fromStdString(archivo).replace("_"," "));
+    }//fin del while
+    verificar.close();
+
+    ui->comboBoxCruzar1->removeItem(ui->comboBoxCruzar1->count()-1);
+    ui->comboBoxCruzar2->removeItem(ui->comboBoxCruzar2->count()-1);
+}
+
+
+void MainWindow::on_comboBoxCruzar1_activated(const QString &arg1)
+{
+    campo1.clear();
+    for(int i=ui->cruzarTabla->rowCount()-1;i>=0;i--)
+        ui->cruzarTabla->removeRow(i);
+    for(int i=ui->cruzarTabla->columnCount();i>=0;i--)
+        ui->cruzarTabla->removeColumn(i);
+    ui->comboBoxCampoComun->clear();
+    file1.close();
+    file1.setFileName(arg1);
+    if(!file1.open(QIODevice::ReadWrite | QIODevice::Text))
+        return;
+    QTextStream in(&file1);
+    QString line;
+    while (!in.atEnd()) {
+        line = in.readLine();
+        if(line=="|")
+            break;
+        QStringList divisiones = line.split(" ");
+        bool lla =false;
+        if(divisiones[3]=="Si"){
+           lla=true;
+        }//fin del if
+        campo1.append(Campo(divisiones[0],divisiones[1],divisiones[2].toInt(),lla));
+    }//fin del while
+}
+
+void MainWindow::on_comboBoxCruzar2_activated(const QString &arg1)
+{
+    campo2.clear();
+    for(int i=ui->cruzarTabla->rowCount()-1;i>=0;i--)
+        ui->cruzarTabla->removeRow(i);
+    for(int i=ui->cruzarTabla->columnCount();i>=0;i--)
+        ui->cruzarTabla->removeColumn(i);
+    ui->comboBoxCampoComun->clear();
+    file2.close();
+    file2.setFileName(arg1);
+    if (!file2.open(QIODevice::ReadWrite | QIODevice::Text))
+        return;
+    QTextStream in(&file2);
+    QString line;
+    while (!in.atEnd()) {
+        line = in.readLine();
+        if(line=="|")
+            break;
+        QStringList divisiones = line.split(" ");
+        bool lla =false;
+        if(divisiones[3]=="Sí"){
+            lla=true;
+        }//fin del if
+        campo2.append(Campo(divisiones[0],divisiones[1],divisiones[2].toInt(),lla));
+     }//fin del while
+}
+
+void MainWindow::on_botonCruzar_clicked()
+{
+    for(int i=ui->cruzarTabla->rowCount()-1;i>=0;i--)
+        ui->cruzarTabla->removeRow(i);
+    for(int i=ui->cruzarTabla->columnCount();i>=0;i--)
+        ui->cruzarTabla->removeColumn(i);
+    ui->comboBoxCampoComun->clear();
+
+    if(ui->comboBoxCruzar1->currentText()!=ui->comboBoxCruzar2->currentText()){
+          for(int i=0;i<campo1.count();i++){
+              for(int j=0;j<campo2.count();j++){
+                  if(campo1[i].getNombreCampo()==campo2[j].getNombreCampo() && campo1[i].getTamanoCampo()==campo2[j].getTamanoCampo()
+                      && campo1[i].getTipoCampo()== campo2[j].getTipoCampo()){
+                      if(campo1[i].getEsLlave() || campo2[j].getEsLlave())
+                      ui->comboBoxCampoComun->addItem(campo1[i].getNombreCampo());
+                      j=campo2.count();
+                  }//fin del if
+              }//fin del for
+          }//fin del for
+    }//fin del if
+}
+
+
+
+void MainWindow::on_comboBoxCampoComun_activated(const QString &arg1)
+{
+    for(int i=ui->cruzarTabla->rowCount()-1;i>=0;i--)
+            ui->cruzarTabla->removeRow(i);
+        for(int i=ui->cruzarTabla->columnCount();i>=0;i--)
+            ui->cruzarTabla->removeColumn(i);
+
+        bool campo1=true;
+        for(int i=0;i<this->campo2.count();i++){
+            if(this->campo2[i].getNombreCampo()==ui->comboBoxCampoComun->currentText() && this->campo2[i].getEsLlave()==true)
+                campo1=false;
+        }//fin del for
+        int columnaeliminar=0;
+        int campollave=0;
+        int tamano=0;
+        if(campo1==false){
+        for(int i=0;i<this->campo1.count();i++){
+            ui->cruzarTabla->insertColumn(i);
+           if(this->campo1[i].getNombreCampo().length()>this->campo1[i].getTamanoCampo())
+                ui->cruzarTabla->setColumnWidth(i,this->campo1[i].getNombreCampo().length()*10);
+            else
+                ui->cruzarTabla->setColumnWidth(i,this->campo1[i].getTamanoCampo()*15);
+            ui->cruzarTabla->setHorizontalHeaderItem(i,new QTableWidgetItem(this->campo1[i].getNombreCampo()));
+            if(this->campo1[i].getNombreCampo()==ui->comboBoxCampoComun->currentText() && this->campo1[i].getEsLlave()==false)
+                campollave = i;
+
+        }//fin del for
+
+        for(int i=0;i<this->campo2.count();i++){
+            tamano+=this->campo2[i].getTamanoCampo();
+            int col =this->campo1.count()+i;
+            ui->cruzarTabla->insertColumn(col);
+            if(this->campo2[i].getNombreCampo().length()>this->campo2[i].getTamanoCampo())
+                ui->cruzarTabla->setColumnWidth(col,this->campo2[i].getNombreCampo().length()*10);
+            else
+                ui->cruzarTabla->setColumnWidth(col,this->campo2[i].getTamanoCampo()*15);
+             ui->cruzarTabla->setHorizontalHeaderItem(col,new QTableWidgetItem(this->campo2[i].getNombreCampo()));
+             if(this->campo2[i].getNombreCampo()==ui->comboBoxCampoComun->currentText() && this->campo2[i].getEsLlave()==true)
+                 columnaeliminar=col;
+        }//fin del for
+        }else{
+            for(int i=0;i<this->campo2.count();i++){
+                ui->cruzarTabla->insertColumn(i);
+               if(this->campo2[i].getNombreCampo().length()>this->campo2[i].getTamanoCampo())
+                    ui->cruzarTabla->setColumnWidth(i,this->campo2[i].getNombreCampo().length()*10);
+                else
+                    ui->cruzarTabla->setColumnWidth(i,this->campo2[i].getTamanoCampo()*15);
+                ui->cruzarTabla->setHorizontalHeaderItem(i,new QTableWidgetItem(this->campo2[i].getNombreCampo()));
+                if(this->campo2[i].getNombreCampo()==ui->comboBoxCampoComun->currentText() && this->campo2[i].getEsLlave()==false)
+                    campollave = i;
+            }//fin del for
+
+            for(int i=0;i<this->campo1.count();i++){
+                tamano+=this->campo1[i].getTamanoCampo();
+                int col =this->campo2.count()+i;
+                ui->cruzarTabla->insertColumn(col);
+                if(this->campo1[i].getNombreCampo().length()>this->campo1[i].getTamanoCampo())
+                    ui->cruzarTabla->setColumnWidth(col,this->campo1[i].getNombreCampo().length()*10);
+                else
+                    ui->cruzarTabla->setColumnWidth(col,this->campo1[i].getTamanoCampo()*15);
+                 ui->cruzarTabla->setHorizontalHeaderItem(col,new QTableWidgetItem(this->campo1[i].getNombreCampo()));
+                 if(this->campo1[i].getNombreCampo()==ui->comboBoxCampoComun->currentText() && this->campo1[i].getEsLlave()==true)
+                     columnaeliminar=col;
+            }//fin del for
+        }//fin del else
+         ui->cruzarTabla->removeColumn(columnaeliminar);
+         ArbolB arbol;
+         QString nombreindicea;
+         int cantr=0;
+
+         if(campo1==false){
+             nombreindicea = file2.fileName()+"x";
+             cantr=this->campo2[columnaeliminar-this->campo1.count()].getTamanoCampo();
+         }else{
+             nombreindicea = file1.fileName()+"x";
+             cantr=this->campo1[columnaeliminar-this->campo2.count()].getTamanoCampo();
+         }//fin del else
+         nombreindicea[nombreindicea.length()-5] = 'b',nombreindicea[nombreindicea.length()-4] = 't';
+         nombreindicea[nombreindicea.length()-3] = 'i',nombreindicea[nombreindicea.length()-2] = 'd';
+         QFile filea(nombreindicea);
+         if (!filea.open(QIODevice::ReadWrite | QIODevice::Text))
+          return;
+         QTextStream in(&filea);
+         QString line;
+         while(!in.atEnd()){
+             line=in.readLine();
+             nodo temp;
+             QList<Index> indices;
+             QList<int> hijos;
+             int camino=0;
+             for(int i=0;i<63;i++){
+                 indices.append(Index(line.mid(camino,cantr),line.mid(cantr+camino,10)));
+                 camino+=cantr+10;
+             }//fin del for
+             camino-=cantr+6;
+             for(int i=0;i<64;i++){
+                 hijos.append(line.mid(camino,4).toInt());
+                 camino+=4;
+             }//fin del for
+             temp.setListData(indices);
+             temp.setListSon(hijos);
+             arbol.insertNode(temp);
+         }//fin del while
+         filea.close();
+         int padre=arbol.getNodos().count()-1;
+
+
+         ui->comboBoxCruzar1->addItem(QString::number(padre));
+
+         file1.seek(0);
+         file2.seek(0);
+         if(campo1==false){
+             QTextStream in(&file1);
+             QString line;
+             bool empezar = false;
+             while(!in.atEnd()){
+                 line = in.readLine();
+                 if(empezar){
+                     if(line[0]!='*'){
+                         int rowc = ui->cruzarTabla->rowCount();
+                         int camino=0;
+                         ui->cruzarTabla->insertRow(rowc);
+                         QString data;
+                         for(int o=0;o<this->campo1.count();o++){
+                             data= line.mid(camino,this->campo1[o].getTamanoCampo());
+                            ui->cruzarTabla->setItem(rowc,o,new QTableWidgetItem(data));
+                          camino+=this->campo1[o].getTamanoCampo();
+                       }//fin del for
+                     }//fin del if
+                 }//fin del if
+                 if(line=="$")
+                     empezar=true;
+
+             }//fin del while
+
+           QTextStream in2(&file2);
+           QString line2;
+            for(int i=0;i<ui->cruzarTabla->rowCount();i++){
+                QTableWidgetItem* item = ui->cruzarTabla->item(i,campollave);
+                QString llave = item->text();
+                QList<int> partes;
+                if(this->campo2[columnaeliminar-this->campo1.count()].getTipoCampo()=="CHAR"){
+                    partes = arbol.searchIndex(llave,padre,1);
+                 }else{
+                    partes = arbol.searchIndex(llave,padre,2);
+                }//fin del else
+                if(partes[0]!=-1){
+                    file2.seek(arbol.getNodos()[partes[0]].getData()[partes[1]].getRRN('a').toInt());
+                    line2=in2.readLine();
+                    int camino=0;
+                    for(int k=0;k<this->campo2.count();k++){
+                        if(k!=columnaeliminar-this->campo1.count()){
+                            ui->cruzarTabla->setItem(i,k+(this->campo1.count()-1),new QTableWidgetItem(line2.mid(camino,this->campo2[k].getTamanoCampo())));
+                        }//fin del if
+                        camino+=this->campo2[k].getTamanoCampo();
+                    }//fin del for
+                }//fin del if
+            }//fin del for
+
+           }else{
+             QTextStream in(&file2);
+             QString line;
+             bool empezar = false;
+             while(!in.atEnd()){
+                 line = in.readLine();
+                 if(empezar){
+                     if(line[0]!='*'){
+                         int rowc = ui->cruzarTabla->rowCount();
+                         int camino=0;
+                         ui->cruzarTabla->insertRow(rowc);
+                         QString data;
+                         for(int o=0;o<this->campo2.count();o++){
+                             data= line.mid(camino,this->campo2[o].getTamanoCampo());
+                             ui->cruzarTabla->setItem(rowc,o,new QTableWidgetItem(data));
+                          camino+=this->campo2[o].getTamanoCampo();
+                       }//fin del for
+                    }//fin del if
+                  }//fin del if
+                 if(line=="$")
+                     empezar=true;
+
+             }//fin del while
+
+             QTextStream in2(&file1);
+             QString line2;
+              for(int i=0;i<ui->cruzarTabla->rowCount();i++){
+                  QTableWidgetItem* item = ui->cruzarTabla->item(i,campollave);
+                  QString llave = item->text();
+                  QList<int> partes;
+                  if(this->campo1[columnaeliminar-this->campo2.count()].getTipoCampo()=="CHAR"){
+                      partes = arbol.searchIndex(llave,padre,1);
+                   }else{
+                      partes = arbol.searchIndex(llave,padre,2);
+                  }//fin del else
+                  if(partes[0]!=-1){
+                      file1.seek(arbol.getNodos()[partes[0]].getData()[partes[1]].getRRN('a').toInt());
+                      line2=in2.readLine();
+                      int camino=0;
+                      for(int k=0;k<this->campo1.count();k++){
+                          if(k!=columnaeliminar-this->campo2.count()){
+                              ui->cruzarTabla->setItem(i,k+(this->campo2.count()-1),new QTableWidgetItem(line2.mid(camino,this->campo1[k].getTamanoCampo())));
+                          }//fin del if
+                          camino+=this->campo1[k].getTamanoCampo();
+                      }//fin del for
+                  }//fin del if
+              }//fin del for
+
+
+         }//fin del else
+
+
+         ui->comboBoxCampoComun->addItem(QString::number(ui->cruzarTabla->columnCount()));
+         int rowcount = ui->cruzarTabla->rowCount();
+         int i=0;
+          while(i<rowcount){
+             QTableWidgetItem* item = ui->cruzarTabla->item(i,ui->cruzarTabla->columnCount()-1);
+             if(item==NULL){
+                 ui->cruzarTabla->removeRow(i);
+                 rowcount--;
+             }else{
+                 i++;
+            }//fin del else
+          }//fin del while
+}
