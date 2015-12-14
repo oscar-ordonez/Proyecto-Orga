@@ -17,14 +17,17 @@ SOURCES += main.cpp\
     borrarcampos.cpp \
     campo.cpp \
     index.cpp
+    listarcampos.cpp
 
 HEADERS  += mainwindow.h \
     borrarcampos.h \
     campo.h \
     index.h
+    listarcampos.h
 
 FORMS    += mainwindow.ui \
-    borrarcampos.ui
+    borrarcampos.ui \
+    listarcampos.ui
 
 RESOURCES += \
     Recursos.qrc

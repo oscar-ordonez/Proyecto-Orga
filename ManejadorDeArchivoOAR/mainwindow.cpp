@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "borrarcampos.h"
+#include "listarcampos.h"
 #include "ui_mainwindow.h"
 #include <iostream>
 #include <QDebug>
@@ -27,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->panelCampos->setVisible(false);
     ui->tablaCampos->setVisible(false);
     ui->panelRegistros->setVisible(false);
+    ui->panelModificar->setVisible(false);
 }
 
 MainWindow::~MainWindow()
@@ -82,6 +84,8 @@ void MainWindow::on_actionCrear_Campos_triggered()
     //panels
     ui->panelRegistros->setVisible(false);
     ui->panelCampos->setVisible(true);
+    ui->panelCampos->setEnabled(true);
+    ui->panelModificar->setEnabled(false);
 }
 
 void MainWindow::on_abrirArchivo_clicked()
@@ -92,7 +96,7 @@ void MainWindow::on_abrirArchivo_clicked()
     QFile archivo (direccion);
     archivo.open(QIODevice::ReadOnly);
     QTextStream tsreading (&archivo);
-
+    Campo temporalCampo;
     //verificar si hay cosas escritas en el archivo
     QString contenido = tsreading.readAll();
     int caracteres = contenido.length();
@@ -108,21 +112,24 @@ void MainWindow::on_abrirArchivo_clicked()
         for(int i = 0; i < caracteres; i++){
             if (contenido.at(i) == '|'){
                 break;
-            } else if(contenido.at(i) == ' '){
+            } else if(contenido.at(i) == ' ' || contenido.at(i) == '\n'){
                 switch (ubicacion){
                 case 0:
                     ui->tablaCampos->setItem(row,ubicacion,new QTableWidgetItem(registro));
                     ubicacion++;
+                    nombreCampo = registro;
                     registro = "";
                     break;
                 case 1:
                     ui->tablaCampos->setItem(row,ubicacion,new QTableWidgetItem(registro));
                     ubicacion++;
+                    tipoCampo = registro;
                     registro = "";
                     break;
                 case 2:
                     ui->tablaCampos->setItem(row,ubicacion,new QTableWidgetItem(registro));
                     ubicacion++;
+                    tamanoCampo = registro;
                     registro = "";
                     break;
                 case 3:
@@ -130,13 +137,24 @@ void MainWindow::on_abrirArchivo_clicked()
                     row = ui->tablaCampos->rowCount();
                     ui->tablaCampos->insertRow(row);
                     ubicacion = 0;
+                    esLlave = registro;
                     registro = "";
+                    temporalCampo.setNombreCampo(nombreCampo);
+                    temporalCampo.setTipoCampo(tipoCampo);
+                    temporalCampo.setTamanoCampo(tamanoCampo.toInt());
+                    if(esLlave == "Si"){
+                        temporalCampo.setEsLlave(true);
+                        ui->labelEsLlave->setVisible(false);
+                        ui->comboBoxEsLlave->setVisible(false);
+                        ui->comboBoxEsLlave->setCurrentIndex(1);
+                    }else{
+                        temporalCampo.setEsLlave(false);
+                    }
+                    listaCampos.append(temporalCampo);
                     break;
                 }
                 //ui->tablaCampos->setItem(row,ubicacion,new QTableWidgetItem(registro));
-            } else if(contenido.at(i) == sp.at(sp.size()-1)){
-                qDebug() << "entro";
-            } else if (contenido.at(i) != ' '){
+            }else if (contenido.at(i) != ' '){
                 registro.append(contenido.at(i));
             }
         }
@@ -210,10 +228,34 @@ void MainWindow::on_addRows_clicked()//accion no utilizada
 
 void MainWindow::on_actionBorrar_Campos_triggered()
 {
+    //panels
+    ui->panelRegistros->setVisible(false);
+    ui->panelCampos->setEnabled(false);
+    ui->panelModificar->setEnabled(true);
+    ui->panelModificar->setVisible(true);
+    ui->modificarCampo->setEnabled(false);
+    ui->eliminarCampo->setEnabled(true);
+    ui->comboBoxModificarCampo->clear();
+    /*for(int i = 0; i < ui->comboBoxModificarCampo->count(); i++){
+        ui->comboBoxModificarCampo->removeItem(i);
+    }*/
+    //llenar comboBox
+    for(int i = 0; i < listaCampos.size(); i++){
+        ui->comboBoxModificarCampo->addItem(listaCampos.at(i).getNombreCampo());
+    }
+
+    //reset all fields
+    ui->comboBoxModificarCampo->setCurrentIndex(0);
+    ui->comboBoxModificarEsLlave->setCurrentIndex(0);
+    //ui->comboBoxModificarEsLlave->setEnabled(false);
+    ui->comboBoxTipoModificarCampo->setCurrentIndex(0);
+    //ui->comboBoxTipoModificarCampo->setEnabled(false);
+    ui->tamanoModificarCampo->setValue(1);
+    //ui->tamanoModificarCampo->setEnabled(false);
+    ui->nombreModificarCampo->setText("");
+    //ui->nombreModificarCampo->setEnabled(false);
 
 }
-
-
 
 void MainWindow::on_actionSalvar_Archivo_triggered()
 {
@@ -324,15 +366,41 @@ void MainWindow::on_actionListar_Campos_triggered()
     //panels
     ui->panelRegistros->setVisible(false);
     ui->panelCampos->setVisible(true);
-
-
+    ListarCampos listarCampos;
+    listarCampos.llenarTabla(listaCampos);
+    listarCampos.setModal(true);
+    listarCampos.exec();
 }
 
 void MainWindow::on_actionModificar_Campos_triggered()
 {
     //panels
     ui->panelRegistros->setVisible(false);
-    ui->panelCampos->setVisible(true);
+    ui->panelCampos->setEnabled(false);
+
+    ui->panelModificar->setVisible(true);
+    ui->panelModificar->setEnabled(true);
+    ui->modificarCampo->setEnabled(true);
+    ui->eliminarCampo->setEnabled(false);
+    ui->comboBoxModificarCampo->clear();
+    /*for(int i = 0; i < ui->comboBoxModificarCampo->count(); i++){
+        ui->comboBoxModificarCampo->removeItem(i);
+    }*/
+    //llenar comboBox
+    for(int i = 0; i < listaCampos.size(); i++){
+        ui->comboBoxModificarCampo->addItem(listaCampos.at(i).getNombreCampo());
+    }
+
+    //reset all fields
+    ui->comboBoxModificarCampo->setCurrentIndex(0);
+    ui->comboBoxModificarEsLlave->setCurrentIndex(0);
+    ui->comboBoxModificarEsLlave->setEnabled(true);
+    ui->comboBoxTipoModificarCampo->setCurrentIndex(0);
+    ui->comboBoxTipoModificarCampo->setEnabled(true);
+    ui->tamanoModificarCampo->setValue(1);
+    ui->tamanoModificarCampo->setEnabled(true);
+    ui->nombreModificarCampo->setText("");
+    ui->nombreModificarCampo->setEnabled(true);
 }
 
 void MainWindow::on_actionIntroducir_Registros_triggered()
@@ -480,6 +548,7 @@ void MainWindow::loadKeys(){
         }
     }
 }
+
 
 void MainWindow::on_siguienteRegistro_clicked()
 {
@@ -631,4 +700,240 @@ void MainWindow::on_siguienteRegistro_clicked()
             }
         }
     }
+}
+void MainWindow::on_modificarCampo_clicked() {
+    bool verificar = false;
+    for(int i = 0; i < listaCampos.size(); i++){
+        if(listaCampos.at(i).getEsLlave()){
+            verificar = true;
+            break;
+        }
+    }
+    if(verificar && ui->comboBoxModificarEsLlave->currentIndex() == 0){
+        QMessageBox error;
+         error.setText("Ya existe una llave");
+         error.exec();
+    }else{
+         int posicion = ui->comboBoxModificarCampo->currentIndex();
+         QString nombre = ui->nombreModificarCampo->text(), tipo = ui->comboBoxTipoModificarCampo->currentText();
+         int tamano = ui->tamanoModificarCampo->value();
+         bool llave = false;
+         if  (ui->comboBoxModificarEsLlave->currentIndex() == 0){
+             llave = true;
+         }else{
+             llave = false;
+         }
+         listaCampos.replace(posicion, Campo(nombre, tipo, tamano, llave));
+         ui->panelModificar->setEnabled(false);
+    }
+}
+
+void MainWindow::on_eliminarCampo_clicked()
+{
+    listaCampos.removeAt(ui->comboBoxModificarCampo->currentIndex());
+    ui->panelModificar->setEnabled(false);
+}
+
+void MainWindow::on_comboBoxModificarCampo_activated(const QString &arg1){ //accion no se usa
+
+}
+
+void MainWindow::on_comboBoxModificarCampo_currentIndexChanged(int index)
+{
+
+    ui->nombreModificarCampo->setText(listaCampos.at(index).getNombreCampo());
+    ui->tamanoModificarCampo->setValue(listaCampos.at(index).getTamanoCampo());
+    if(listaCampos.at(index).esLlave){
+        ui->comboBoxModificarEsLlave->setCurrentIndex(0);
+    }else{
+        ui->comboBoxModificarEsLlave->setCurrentIndex(1);
+    }
+    if(listaCampos.at(index).getTipoCampo() == "CHAR"){
+        ui->comboBoxTipoModificarCampo->setCurrentIndex(0);
+    } else if(listaCampos.at(index).getTipoCampo() == "INTF"){
+        ui->comboBoxTipoModificarCampo->setCurrentIndex(1);
+    } else{
+        ui->comboBoxTipoModificarCampo->setCurrentIndex(2);
+    }
+}
+
+void MainWindow::exportXml() {
+    /*//si no hay campos o no hay registros entonces no se crea el archivo
+    if (this->current_open_file.listFields().size() == 0 || this->current_open_file.getAllIndexes().size() == 0) {
+        this->lbl_status_bar->setText("There are no fields or records");
+        return;
+    }
+
+    //se despliega un dialogo para seleccionar la carpeta en donde se desea guardar
+    //el archivo XML
+    QString file_path = QFileDialog::getExistingDirectory(this, "Export to XML file", "");
+
+    //si el usuario no presionó cancelar
+    if (!file_path.isEmpty()) {
+        //se concatena el nombre del archivo XML a la carpeta seleccionada
+        file_path += "/outputXML.xml";
+
+        //se crea un archivo lógico
+        QFile file(file_path);
+
+        // se abre el archivo en modo escritura
+        if (!file.open(QIODevice::WriteOnly)) {
+            QMessageBox::warning(this, "Error", "Can not export file");
+        } else {
+            //Se crea un stream para escribir el archivo XML
+            QXmlStreamWriter xml_writer;
+            //se enlaza el stream con el archivo
+            xml_writer.setDevice(&file);
+            // se inicia el documento
+            xml_writer.writeStartDocument();
+
+            //Se agrega el elemento raíz
+            xml_writer.writeStartElement("database");
+            vector<PrimaryIndex*> indexes = this->current_open_file.getAllIndexes();
+
+            // se añaden todos los registros con su información correspondiente
+            // del campo donde están almacenados
+            for (int i = 0; i < indexes.size(); i++) {
+                PrimaryIndex* curr_i = indexes[i];
+                Record* curr_r = this->current_open_file.readRecord(curr_i);
+                vector<Field*> fields = curr_r->getFields();
+                vector<string> record = curr_r->getRecord();
+
+                xml_writer.writeStartElement("record");
+
+                for (int j = 0; j < fields.size(); j++) {
+                    Field* curr_f = fields[j];
+
+                    xml_writer.writeStartElement(QString::fromStdString(curr_f->getName()));
+
+                    if (curr_f->isKey()) {
+                        xml_writer.writeAttribute(QString::fromStdString(string("key")), QString::fromStdString(string("true")));
+                    } else {
+                        xml_writer.writeAttribute(QString::fromStdString(string("key")), QString::fromStdString(string("false")));
+                    }
+
+                    if (curr_f->getDatatype() == INT_DT) {
+                        xml_writer.writeAttribute(QString::fromStdString(string("type")), QString::fromStdString(string("INT")));
+                        xml_writer.writeAttribute(QString::fromStdString(string("length")), QString::number(curr_f->getLength()));
+                    } else if (curr_f->getDatatype() == STRING_DT) {
+                        xml_writer.writeAttribute(QString::fromStdString(string("type")), QString::fromStdString(string("STRING")));
+                        xml_writer.writeAttribute(QString::fromStdString(string("length")), QString::number(curr_f->getLength()));
+                    } else {
+                        xml_writer.writeAttribute(QString::fromStdString(string("type")), QString::fromStdString(string("REAL")));
+                        xml_writer.writeAttribute(QString::fromStdString(string("length")), QString::number(curr_f->getLength()));
+                        xml_writer.writeAttribute(QString::fromStdString(string("dplaces")), QString::number(curr_f->getDecimalPlaces()));
+                    }
+
+                    xml_writer.writeCharacters(QString::fromStdString(record[j]));
+                    xml_writer.writeEndElement();
+                }
+                xml_writer.writeEndElement();
+
+            }
+            //se cierra el tag principal y el documento
+            xml_writer.writeEndElement();
+            xml_writer.writeEndDocument();
+
+        }
+    }*/
+}
+void MainWindow::exportJson() {
+    /*//verifica si existen campos y registros
+    if (this->current_open_file.listFields().size() == 0 || this->current_open_file.getAllIndexes().size() == 0) {
+        this->lbl_status_bar->setText("There are no fields or records");
+        return;
+    }
+
+    //levanta un dialogo para seleccionar la carpeta donde se va a guardar el archivo JSON
+    QString file_path = QFileDialog::getExistingDirectory(this, "Export JSON file", "");
+
+    if (!file_path.isEmpty()) {
+        //se concatena el nuevo nombre del archivo a la carpeta seleccionada
+        file_path += "/outputJSON.json";
+
+        //se crea un archivo lógico
+        QFile file(file_path);
+        //se abre para escritura y en modo texto
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            QMessageBox::warning(this, "Error", "Can not export the file");
+        } else {
+            //se crea un documento JSON
+            QJsonDocument doc;
+            QJsonObject root;
+
+            vector<Field*> fields1 = this->current_open_file.listFields();
+
+            //se agregan todos los campos como objetos JSON dentro del objeto raíz
+            for (int i = 0; i < fields1.size(); i++) {
+                Field* curr_f = fields1[i];
+
+                QJsonObject curr_o;
+                curr_o.insert(QString::fromStdString(string("name")), QJsonValue(QString::fromStdString(curr_f->getName())));
+
+                if (curr_f->getDatatype() == INT_DT) {
+                    curr_o.insert(QString::fromStdString(string("datatype")), QJsonValue(QString::fromStdString(string("INT"))));
+                } else if (curr_f->getDatatype() == REAL_DT) {
+                    curr_o.insert(QString::fromStdString(string("datatype")), QJsonValue(QString::fromStdString(string("REAL"))));
+                } else {
+                    curr_o.insert(QString::fromStdString(string("datatype")), QJsonValue(QString::fromStdString(string("STRING"))));
+                }
+
+                curr_o.insert(QString::fromStdString(string("length")), QJsonValue(QString::number(curr_f->getLength())));
+
+                if (curr_f->getDatatype() == REAL_DT) {
+                    curr_o.insert(QString::fromStdString(string("dplaces")), QJsonValue(QString::number(curr_f->getDecimalPlaces())));
+                } else {
+                    curr_o.insert(QString::fromStdString(string("dplaces")), QJsonValue(QString::number(0)));
+                }
+
+                curr_o.insert(QString::fromStdString(string("key")), QJsonValue(curr_f->isKey()));
+
+                root.insert(QString::fromStdString(string("Field")) + QString::number(i), QJsonValue(curr_o));
+            }
+
+
+            vector<PrimaryIndex*> indexes = this->current_open_file.getAllIndexes();
+
+            //se agregan los registros como objetos JSON a la raíz
+            for (int i = 0; i < indexes.size(); i++) {
+                QJsonObject curr_o;
+                PrimaryIndex* curr_i = indexes[i];
+                Record* curr_r = this->current_open_file.readRecord(curr_i);
+                vector<Field*> fields = curr_r->getFields();
+                vector<string> record = curr_r->getRecord();
+
+                for (int j = 0; j < fields.size(); j++) {
+                    Field* curr_f = fields[j];
+                    curr_o.insert(QString::fromStdString(curr_f->getName()), QJsonValue(QString::fromStdString(record[j])));
+                }
+                root.insert(QString::fromStdString(string("Record")) + QString::number(i), QJsonValue(curr_o));
+            }
+
+            doc.setObject(root);
+            // se transfiere el contenido del documento JSON a un Qstring
+            QString result(doc.toJson());
+
+            //se crea un stream que enlaza el archivo lógico con el stream de texto
+            QTextStream out(&file);
+
+            //se envia al archivo
+            out << result;
+        }
+    }*/
+}
+void MainWindow::exportExcel(){
+    /*
+    ofstream MyExcelFile;
+    MyExcelFile.open("./Archivos/TablaExcel.csv");
+    for(int i = 0; i < listaCampos.size(); i++){
+        MyExcelFile << listaCampos.at(i).getNombreCampo();
+    }
+    MyExcelFile << endl;
+    MyExcelFile.close();
+    */
+}
+
+void MainWindow::on_actionExportar_Excel_triggered()
+{
+    exportExcel();
 }

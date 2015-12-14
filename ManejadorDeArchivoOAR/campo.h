@@ -4,7 +4,7 @@
 class Campo
 {
 
-private:
+public:
     QString nombreCampo;
     QString tipoCampo;
     int tamanoCampo;
@@ -17,16 +17,16 @@ public:
     Campo(QString, QString, int, bool);
 
     void setNombreCampo (QString);
-    QString getNombreCampo();
+    QString getNombreCampo() const;
 
     void setTipoCampo (QString);
-    QString getTipoCampo();
+    QString getTipoCampo() const;
 
     void setTamanoCampo (int);
-    int getTamanoCampo();
+    int getTamanoCampo() const;
 
     void setEsLlave (bool);
-    bool getEsLlave();
+    bool getEsLlave() const;
 
 };
 
