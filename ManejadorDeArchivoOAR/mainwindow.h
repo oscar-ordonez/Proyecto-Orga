@@ -6,6 +6,7 @@
 #include "campo.h"
 #include <QList>
 #include <QFile>
+#include "index.h"
 
 namespace Ui {
 class MainWindow;
@@ -51,6 +52,8 @@ private slots:
     void on_comboBoxArchivosRegistros_activated(const QString &arg1);
 
     void loadKeys();
+
+    void on_siguienteRegistro_clicked();
 
 private:
 

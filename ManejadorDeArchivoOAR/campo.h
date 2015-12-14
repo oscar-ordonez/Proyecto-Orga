@@ -10,6 +10,7 @@ private:
     int tamanoCampo;
     bool esLlave;
 
+
 public:
 
     Campo();
