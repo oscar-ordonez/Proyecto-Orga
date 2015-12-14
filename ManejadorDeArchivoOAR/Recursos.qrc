@@ -9,5 +9,6 @@
         <file>delete.png</file>
         <file>crear.png</file>
         <file>listar.png</file>
+        <file>indices.png</file>
     </qresource>
 </RCC>

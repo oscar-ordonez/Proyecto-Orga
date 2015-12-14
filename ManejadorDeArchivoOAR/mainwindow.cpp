@@ -937,3 +937,13 @@ void MainWindow::on_actionExportar_Excel_triggered()
 {
     exportExcel();
 }
+
+void MainWindow::on_actionCrear_Indices_triggered()//no existe
+{
+
+}
+
+void MainWindow::on_actionReindexar_Archivos_triggered()
+{
+
+}

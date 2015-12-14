@@ -17,14 +17,18 @@ SOURCES += main.cpp\
     borrarcampos.cpp \
     campo.cpp \
     index.cpp \
-    listarcampos.cpp
+    listarcampos.cpp \
+    arbolb.cpp \
+    nodo.cpp
     listarcampos.cpp
 
 HEADERS  += mainwindow.h \
     borrarcampos.h \
     campo.h \
     index.h \
-    listarcampos.h
+    listarcampos.h \
+    arbolb.h \
+    nodo.h
     listarcampos.h
 
 FORMS    += mainwindow.ui \

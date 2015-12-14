@@ -7,6 +7,7 @@
 #include <QList>
 #include <QFile>
 #include "index.h"
+#include "arbolb.h"
 
 namespace Ui {
 class MainWindow;
@@ -72,6 +73,10 @@ private slots:
 
     void on_actionExportar_Excel_triggered();
 
+    void on_actionCrear_Indices_triggered();
+
+    void on_actionReindexar_Archivos_triggered();
+
 private:
 
     QList<Campo> listaCampos;
@@ -84,6 +89,8 @@ private:
     int numOSH; //offsethead
     QFile fileArchivo;
     QFile fileIndice;
+    QList<Index> indexList;
+    ArbolB arbolB;
     Ui::MainWindow *ui;
     BorrarCampos *borrarCampos;
 };
