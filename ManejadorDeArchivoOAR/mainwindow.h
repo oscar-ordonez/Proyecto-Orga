@@ -77,6 +77,13 @@ private slots:
 
     void on_actionReindexar_Archivos_triggered();
 
+    void on_comboBoxIndexar_activated(const QString &arg1);
+
+    void on_botonIndexar_clicked();
+
+    void InsercionE();
+
+    void Insercion();
 private:
 
     QList<Campo> listaCampos;

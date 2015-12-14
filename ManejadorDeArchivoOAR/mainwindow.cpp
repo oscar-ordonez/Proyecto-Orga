@@ -262,7 +262,7 @@ void MainWindow::on_actionSalvar_Archivo_triggered()
     if(archivoAbierto != "" && listaCampos.count() > 0){
         string nombreArchivo = (archivoAbierto + "Dato").toStdString();
         QString nombreIndice = (archivoAbierto + "Indx");
-        QString nombreIndiceArbol = (archivoAbierto + "IAbl");
+        QString nombreIndiceArbol = (archivoAbierto + "InAbl");
 
         ifstream archivo ("./Archivos/todosArchivos.ncr");
         bool existe = false;
@@ -945,5 +945,203 @@ void MainWindow::on_actionCrear_Indices_triggered()//no existe
 
 void MainWindow::on_actionReindexar_Archivos_triggered()
 {
+    qDebug()<<"Entra a indexar";
+    numCampoLlave = -1;
+    listaCamposAbiertos.clear();
+    indexList.clear();
+    arbolB.getNodos().clear();
 
+    ui->panelIndexar->setVisible(true);
+    ui->comboBoxIndexar->clear();
+    ui->comboBoxIndexar->clear();
+    QList<QString> archivos;
+
+    qDebug()<<"Abre donde estan todos los archivos";
+    QFile file("./Archivos/todosArchivos.ncr");
+    qDebug()<<"Pasa Abrir archivo";
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        qDebug()<<"Entra al if";
+        QTextStream in(&file);
+        while (!in.atEnd()) {
+            qDebug()<<"Entra al while";
+            QString archivo;
+            archivo=in.readLine();
+            archivos.append(archivo);
+            qDebug()<<"Archivo: " << archivo;
+        }
+    }
+
+    //solo cargara archivos con registros
+    for(int i=0;i<archivos.count();i++){
+        qDebug()<<"Entra al for";
+        QFile file (archivos[i].replace("_"," "));
+        if (!file.open(QIODevice::ReadWrite | QIODevice::Text))
+            return;
+        QTextStream in(&file);
+        QString line ;
+        int mas = 0;
+        bool tienellave = false;
+        bool activar = false;
+        while (!in.atEnd()){
+            qDebug()<<"Entra al segundo while";
+            line = in.readLine();
+            if(line.contains("Si"))
+                tienellave = true;
+            if(mas==1){
+                mas++;
+                break;
+            }
+            if(activar)
+                if(line!="\n")
+                    mas++;
+            if(line=="$")
+                activar = true;
+        }
+        if(mas>=1 && tienellave){
+            qDebug()<<"Se supone q escribe";
+            ui->comboBoxIndexar->addItem(archivos[i]);
+        }
+        file.close();
+    }
 }
+
+void MainWindow::on_comboBoxIndexar_activated(const QString &arg1)
+{
+    numCampoLlave = -1;
+    listaCamposAbiertos.clear();
+    indexList.clear();
+    QList<Index> indicesar;
+    ArbolB arboll;
+    arbolB = arboll;
+    QFile file(arg1);
+    if (!file.open(QIODevice::ReadWrite | QIODevice::Text))
+        return;
+    QTextStream in(&file);
+    QString line ;
+    bool parar = false;
+    bool empezar  = false;
+    int offllave =0;
+    int RRN=0;
+    int offsetarbol=0;
+    int pa=0;
+    while (!in.atEnd()){
+         line = in.readLine();
+          if(line=="|")
+              parar = true;
+          //////////leer estructura
+          if(parar==false){
+              QStringList divisiones = line.split(" ");
+              bool lla =false;
+              if(divisiones[3]=="Si"){
+                    lla=true;
+                    numCampoLlave = listaCamposAbiertos.count();
+              }
+              listaCamposAbiertos.append(Campo(divisiones[0],divisiones[1],divisiones[2].toInt(),lla));
+          }//fin leer estructura
+           /////////////////leer registros
+          if(empezar)
+            RRN++;
+          if(empezar && line[0]!='*'){
+                QString llave  = line.mid(offllave,listaCamposAbiertos[numCampoLlave].getTamanoCampo());
+                indexList.append(Index(llave.toUpper(),QString::number(RRN)));
+                indicesar.append(Index(llave.toUpper(),QString::number(offsetarbol)));
+                if(listaCamposAbiertos[numCampoLlave].getTipoCampo()=="CHAR"){
+                    pa= arbolB.insertIndex(indicesar[indicesar.count()-1],pa,1);
+                }else{
+                    pa= arbolB.insertIndex(indicesar[indicesar.count()-1],pa,2);
+                }
+           }
+           if(line=="$"){
+                empezar = true;
+                for(int i=0;i<numCampoLlave;i++){
+                    offllave+=listaCamposAbiertos[i].getTamanoCampo();
+                }
+           }
+           offsetarbol+=line.toUtf8().length()+1;
+    }
+    file.close();
+}
+
+void MainWindow::on_botonIndexar_clicked()
+{
+    if(ui->comboBoxIndexar->currentText()!=""){
+        //ordenar los indices
+        if(listaCamposAbiertos[numCampoLlave].getTipoCampo()=="INTF")
+            InsercionE();
+        else
+            Insercion();
+
+        QString nombreindicea = ui->comboBoxIndexar->currentText()+"I";
+        nombreindicea[nombreindicea.length()-5] = 'n',nombreindicea[nombreindicea.length()-4] = 'A';
+        nombreindicea[nombreindicea.length()-3] = 'b',nombreindicea[nombreindicea.length()-2] = 'l';
+        QFile filea(nombreindicea);
+        if (!filea.open(QIODevice::ReadWrite | QIODevice::Text))
+         return;
+        QTextStream outa(&filea);
+        QString mandara;
+        for(int i=0;i<arbolB.getNodos().count();i++){
+            for(int j=0;j<arbolB.getNodos()[i].getData().count();j++){
+                mandara+=arbolB.getNodos()[i].getData()[j].getKey()+arbolB.getNodos()[i].getData()[j].getRRN('a');
+            }
+
+            for(int j=0;j<arbolB.getNodos()[i].getSons().count();j++){
+                QString hijo ="    ";
+                QString hi=QString::number(arbolB.getNodos()[i].getSons()[j]);
+                for(int o=0;o<hi.length();o++){
+                    hijo[o]=hi[o];
+                }
+               mandara+=hijo;
+            }
+            mandara+='\n';
+
+        }
+
+         outa<<mandara;
+         filea.resize(filea.pos());
+         filea.close();
+        QString nombreindice = ui->comboBoxIndexar->currentText();
+        nombreindice[nombreindice.length()-4] = 'I',nombreindice[nombreindice.length()-3] = 'n';
+        nombreindice[nombreindice.length()-2] = 'd',nombreindice[nombreindice.length()-1] = 'x';
+        QFile file(nombreindice);
+            if (!file.open(QIODevice::ReadWrite | QIODevice::Text))
+             return;
+         QTextStream out(&file);
+         QString mandar1;
+
+            for(int i=0;i<indexList.count();i++){
+               mandar1+=(indexList[i].getKey()+indexList[i].getRRN('l'))+'\n';
+            }
+            out<<mandar1;
+            file.resize(file.pos());
+         file.close();
+        ui->comboBoxIndexar->clear();
+        }
+}
+
+void MainWindow::InsercionE(){
+    int i, j;
+    Index temp;
+    for (i = 1; i < indexList.count(); i++){
+        temp = indexList[i];
+        j = i-1;
+    while ( ((j >= 0 &&indexList[j].getKey().toInt()> temp.getKey().toInt()) ) ){
+        indexList[j+1]=indexList[j];
+        j--;
+    }
+        indexList[j+1]=temp;
+    }
+}//fin metodo ordenar
+
+void MainWindow::Insercion(){
+    int i, j;
+    Index temp;
+    for (i = 1; i < indexList.count(); i++){
+        temp = indexList[i];
+        j = i-1;
+    while ( ((j >= 0 &&indexList[j].getKey()> temp.getKey()) ) ){
+        indexList[j+1]=indexList[j];
+        j--;
+    }
+    indexList[j+1]=temp;
+    }
+}//fin metodo ordenar
