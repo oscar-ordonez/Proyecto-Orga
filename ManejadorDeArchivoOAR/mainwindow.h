@@ -62,6 +62,14 @@ private slots:
 
     void on_comboBoxModificarCampo_activated(const QString &arg1);
 
+    void exportXml();
+
+    void exportJson();
+
+    void exportExcel();
+
+    void on_actionExportar_Excel_triggered();
+
 private:
 
     QList<Campo> listaCampos;
