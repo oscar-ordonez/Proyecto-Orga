@@ -16,13 +16,15 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     borrarcampos.cpp \
     campo.cpp \
-    index.cpp
+    index.cpp \
+    listarcampos.cpp
     listarcampos.cpp
 
 HEADERS  += mainwindow.h \
     borrarcampos.h \
     campo.h \
-    index.h
+    index.h \
+    listarcampos.h
     listarcampos.h
 
 FORMS    += mainwindow.ui \
