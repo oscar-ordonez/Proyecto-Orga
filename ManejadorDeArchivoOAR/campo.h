@@ -4,7 +4,7 @@
 class Campo
 {
 
-private:
+public:
     QString nombreCampo;
     QString tipoCampo;
     int tamanoCampo;

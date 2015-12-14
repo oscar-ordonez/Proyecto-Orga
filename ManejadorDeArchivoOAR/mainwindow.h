@@ -52,6 +52,16 @@ private slots:
 
     void loadKeys();
 
+    void on_modificarCampo_clicked();
+
+    void on_comboBoxModificarCampo_currentIndexChanged(int index);
+
+    void on_modificarCampo_2_clicked();
+
+    void on_eliminarCampo_clicked();
+
+    void on_comboBoxModificarCampo_activated(const QString &arg1);
+
 private:
 
     QList<Campo> listaCampos;

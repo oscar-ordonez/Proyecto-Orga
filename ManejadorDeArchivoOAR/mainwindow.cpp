@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->panelCampos->setVisible(false);
     ui->tablaCampos->setVisible(false);
     ui->panelRegistros->setVisible(false);
+    ui->panelModificar->setVisible(false);
 }
 
 MainWindow::~MainWindow()
@@ -83,6 +84,8 @@ void MainWindow::on_actionCrear_Campos_triggered()
     //panels
     ui->panelRegistros->setVisible(false);
     ui->panelCampos->setVisible(true);
+    ui->panelCampos->setEnabled(true);
+    ui->panelModificar->setEnabled(false);
 }
 
 void MainWindow::on_abrirArchivo_clicked()
@@ -143,6 +146,7 @@ void MainWindow::on_abrirArchivo_clicked()
                         temporalCampo.setEsLlave(true);
                         ui->labelEsLlave->setVisible(false);
                         ui->comboBoxEsLlave->setVisible(false);
+                        ui->comboBoxEsLlave->setCurrentIndex(1);
                     }else{
                         temporalCampo.setEsLlave(false);
                     }
@@ -224,10 +228,34 @@ void MainWindow::on_addRows_clicked()//accion no utilizada
 
 void MainWindow::on_actionBorrar_Campos_triggered()
 {
+    //panels
+    ui->panelRegistros->setVisible(false);
+    ui->panelCampos->setEnabled(false);
+    ui->panelModificar->setEnabled(true);
+    ui->panelModificar->setVisible(true);
+    ui->modificarCampo->setEnabled(false);
+    ui->eliminarCampo->setEnabled(true);
+    ui->comboBoxModificarCampo->clear();
+    /*for(int i = 0; i < ui->comboBoxModificarCampo->count(); i++){
+        ui->comboBoxModificarCampo->removeItem(i);
+    }*/
+    //llenar comboBox
+    for(int i = 0; i < listaCampos.size(); i++){
+        ui->comboBoxModificarCampo->addItem(listaCampos.at(i).getNombreCampo());
+    }
+
+    //reset all fields
+    ui->comboBoxModificarCampo->setCurrentIndex(0);
+    ui->comboBoxModificarEsLlave->setCurrentIndex(0);
+    //ui->comboBoxModificarEsLlave->setEnabled(false);
+    ui->comboBoxTipoModificarCampo->setCurrentIndex(0);
+    //ui->comboBoxTipoModificarCampo->setEnabled(false);
+    ui->tamanoModificarCampo->setValue(1);
+    //ui->tamanoModificarCampo->setEnabled(false);
+    ui->nombreModificarCampo->setText("");
+    //ui->nombreModificarCampo->setEnabled(false);
 
 }
-
-
 
 void MainWindow::on_actionSalvar_Archivo_triggered()
 {
@@ -348,7 +376,31 @@ void MainWindow::on_actionModificar_Campos_triggered()
 {
     //panels
     ui->panelRegistros->setVisible(false);
-    ui->panelCampos->setVisible(true);
+    ui->panelCampos->setEnabled(false);
+
+    ui->panelModificar->setVisible(true);
+    ui->panelModificar->setEnabled(true);
+    ui->modificarCampo->setEnabled(true);
+    ui->eliminarCampo->setEnabled(false);
+    ui->comboBoxModificarCampo->clear();
+    /*for(int i = 0; i < ui->comboBoxModificarCampo->count(); i++){
+        ui->comboBoxModificarCampo->removeItem(i);
+    }*/
+    //llenar comboBox
+    for(int i = 0; i < listaCampos.size(); i++){
+        ui->comboBoxModificarCampo->addItem(listaCampos.at(i).getNombreCampo());
+    }
+
+    //reset all fields
+    ui->comboBoxModificarCampo->setCurrentIndex(0);
+    ui->comboBoxModificarEsLlave->setCurrentIndex(0);
+    ui->comboBoxModificarEsLlave->setEnabled(true);
+    ui->comboBoxTipoModificarCampo->setCurrentIndex(0);
+    ui->comboBoxTipoModificarCampo->setEnabled(true);
+    ui->tamanoModificarCampo->setValue(1);
+    ui->tamanoModificarCampo->setEnabled(true);
+    ui->nombreModificarCampo->setText("");
+    ui->nombreModificarCampo->setEnabled(true);
 }
 
 void MainWindow::on_actionIntroducir_Registros_triggered()
@@ -482,5 +534,63 @@ void MainWindow::loadKeys(){
                 comienzo = false;
             }
         }
+    }
+}
+
+void MainWindow::on_modificarCampo_clicked()
+{
+    bool verificar = false;
+    for(int i = 0; i < listaCampos.size(); i++){
+        if(listaCampos.at(i).getEsLlave()){
+            verificar = true;
+            break;
+        }
+    }
+    if(verificar && ui->comboBoxModificarEsLlave->currentIndex() == 0){
+        QMessageBox error;
+         error.setText("Ya existe una llave");
+         error.exec();
+    }else{
+         int posicion = ui->comboBoxModificarCampo->currentIndex();
+         QString nombre = ui->nombreModificarCampo->text(), tipo = ui->comboBoxTipoModificarCampo->currentText();
+         int tamano = ui->tamanoModificarCampo->value();
+         bool llave = false;
+         if  (ui->comboBoxModificarEsLlave->currentIndex() == 0){
+             llave = true;
+         }else{
+             llave = false;
+         }
+         listaCampos.replace(posicion, Campo(nombre, tipo, tamano, llave));
+         ui->panelModificar->setEnabled(false);
+    }
+}
+
+void MainWindow::on_eliminarCampo_clicked()
+{
+    listaCampos.removeAt(ui->comboBoxModificarCampo->currentIndex());
+    ui->panelModificar->setEnabled(false);
+}
+
+void MainWindow::on_comboBoxModificarCampo_activated(const QString &arg1)//accion no se usa
+{
+
+}
+
+void MainWindow::on_comboBoxModificarCampo_currentIndexChanged(int index)
+{
+
+    ui->nombreModificarCampo->setText(listaCampos.at(index).getNombreCampo());
+    ui->tamanoModificarCampo->setValue(listaCampos.at(index).getTamanoCampo());
+    if(listaCampos.at(index).esLlave){
+        ui->comboBoxModificarEsLlave->setCurrentIndex(0);
+    }else{
+        ui->comboBoxModificarEsLlave->setCurrentIndex(1);
+    }
+    if(listaCampos.at(index).getTipoCampo() == "CHAR"){
+        ui->comboBoxTipoModificarCampo->setCurrentIndex(0);
+    } else if(listaCampos.at(index).getTipoCampo() == "INTF"){
+        ui->comboBoxTipoModificarCampo->setCurrentIndex(1);
+    } else{
+        ui->comboBoxTipoModificarCampo->setCurrentIndex(2);
     }
 }

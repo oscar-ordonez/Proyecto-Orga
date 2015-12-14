@@ -1,7 +1,6 @@
 #include "campo.h"
 
 Campo::Campo(){
-
 }
 
 Campo::Campo(QString nombreCampo, QString tipoCampo, int tamanoCampo, bool esLlave){
@@ -11,7 +10,7 @@ Campo::Campo(QString nombreCampo, QString tipoCampo, int tamanoCampo, bool esLla
     this->esLlave = esLlave;
 }
 
-void Campo::setNombreCampo (QString nombreCampo){
+void Campo::setNombreCampo (const QString nombreCampo){
     this->nombreCampo = nombreCampo;
 }
 
