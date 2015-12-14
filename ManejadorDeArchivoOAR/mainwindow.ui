@@ -681,8 +681,8 @@
    <widget class="QFrame" name="panelIndexar">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>600</y>
+      <x>170</x>
+      <y>120</y>
       <width>431</width>
       <height>71</height>
      </rect>
@@ -720,8 +720,8 @@
    <widget class="QFrame" name="panelCruzar">
     <property name="geometry">
      <rect>
-      <x>780</x>
-      <y>320</y>
+      <x>150</x>
+      <y>20</y>
       <width>501</width>
       <height>341</height>
      </rect>

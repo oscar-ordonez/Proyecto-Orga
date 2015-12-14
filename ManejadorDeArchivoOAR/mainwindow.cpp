@@ -29,6 +29,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tablaCampos->setVisible(false);
     ui->panelRegistros->setVisible(false);
     ui->panelModificar->setVisible(false);
+    ui->panelCruzar->setVisible(false);
+    ui->panelIndexar->setVisible(false);
+
 }
 
 MainWindow::~MainWindow()
@@ -41,8 +44,12 @@ MainWindow::~MainWindow()
 void MainWindow::on_actionNuevo_Archivo_triggered()
 {
     //panels
-    ui->panelRegistros->setVisible(false);
     ui->panelCampos->setVisible(false);
+    ui->tablaCampos->setVisible(false);
+    ui->panelRegistros->setVisible(false);
+    ui->panelModificar->setVisible(false);
+    ui->panelCruzar->setVisible(false);
+    ui->panelIndexar->setVisible(false);
 
     //nuevo archivo
     QMessageBox::StandardButton msgbox;
@@ -86,6 +93,12 @@ void MainWindow::on_actionCrear_Campos_triggered()
     ui->panelCampos->setVisible(true);
     ui->panelCampos->setEnabled(true);
     ui->panelModificar->setEnabled(false);
+    ui->tablaCampos->setVisible(false);
+    ui->panelRegistros->setVisible(false);
+    ui->panelModificar->setVisible(false);
+    ui->panelCruzar->setVisible(false);
+    ui->panelIndexar->setVisible(false);
+
 }
 
 void MainWindow::on_abrirArchivo_clicked()
@@ -236,6 +249,10 @@ void MainWindow::on_actionBorrar_Campos_triggered()
     ui->modificarCampo->setEnabled(false);
     ui->eliminarCampo->setEnabled(true);
     ui->comboBoxModificarCampo->clear();
+
+    ui->panelCruzar->setVisible(false);
+    ui->panelIndexar->setVisible(false);
+
     /*for(int i = 0; i < ui->comboBoxModificarCampo->count(); i++){
         ui->comboBoxModificarCampo->removeItem(i);
     }*/
@@ -350,6 +367,13 @@ void MainWindow::on_actionSalvar_Archivo_triggered()
     //panels
     ui->panelRegistros->setVisible(false);
     ui->panelCampos->setVisible(false);
+    ui->panelCampos->setVisible(false);
+    ui->tablaCampos->setVisible(false);
+    ui->panelRegistros->setVisible(false);
+    ui->panelModificar->setVisible(false);
+    ui->panelCruzar->setVisible(false);
+    ui->panelIndexar->setVisible(false);
+
 }
 
 void MainWindow::on_actionCerrar_Archivo_triggered()
@@ -357,6 +381,13 @@ void MainWindow::on_actionCerrar_Archivo_triggered()
     //panels
     ui->panelRegistros->setVisible(false);
     ui->panelCampos->setVisible(false);
+    ui->panelCampos->setVisible(false);
+    ui->tablaCampos->setVisible(false);
+    ui->panelRegistros->setVisible(false);
+    ui->panelModificar->setVisible(false);
+    ui->panelCruzar->setVisible(false);
+    ui->panelIndexar->setVisible(false);
+
 }
 
 void MainWindow::on_actionListar_Campos_triggered()
@@ -364,10 +395,17 @@ void MainWindow::on_actionListar_Campos_triggered()
     //panels
     ui->panelRegistros->setVisible(false);
     ui->panelCampos->setVisible(true);
+
+    ui->panelRegistros->setVisible(false);
+    ui->panelModificar->setVisible(false);
+    ui->panelCruzar->setVisible(false);
+    ui->panelIndexar->setVisible(false);
+
     ListarCampos listarCampos;
     listarCampos.llenarTabla(listaCampos);
     listarCampos.setModal(true);
     listarCampos.exec();
+
 }
 
 void MainWindow::on_actionModificar_Campos_triggered()
@@ -381,6 +419,10 @@ void MainWindow::on_actionModificar_Campos_triggered()
     ui->modificarCampo->setEnabled(true);
     ui->eliminarCampo->setEnabled(false);
     ui->comboBoxModificarCampo->clear();
+
+    ui->panelCruzar->setVisible(false);
+    ui->panelIndexar->setVisible(false);
+
     /*for(int i = 0; i < ui->comboBoxModificarCampo->count(); i++){
         ui->comboBoxModificarCampo->removeItem(i);
     }*/
@@ -406,6 +448,12 @@ void MainWindow::on_actionIntroducir_Registros_triggered()
     //panels
     ui->panelRegistros->setVisible(true);
     ui->panelCampos->setVisible(false);
+
+    ui->panelCampos->setVisible(false);
+    ui->tablaCampos->setVisible(false);
+    ui->panelModificar->setVisible(false);
+    ui->panelCruzar->setVisible(false);
+    ui->panelIndexar->setVisible(false);
 
     ui->datoRegistro->setVisible(true);
     ui->datoRegistroDec->setVisible(false);
@@ -700,6 +748,11 @@ void MainWindow::on_siguienteRegistro_clicked()
     }
 }
 void MainWindow::on_modificarCampo_clicked() {
+    ui->panelRegistros->setVisible(false);
+    ui->panelCruzar->setVisible(false);
+    ui->panelIndexar->setVisible(false);
+
+
     bool verificar = false;
     for(int i = 0; i < listaCampos.size(); i++){
         if(listaCampos.at(i).getEsLlave()){
@@ -728,6 +781,11 @@ void MainWindow::on_modificarCampo_clicked() {
 
 void MainWindow::on_eliminarCampo_clicked()
 {
+    ui->panelRegistros->setVisible(false);
+    ui->panelCruzar->setVisible(false);
+    ui->panelIndexar->setVisible(false);
+
+
     listaCampos.removeAt(ui->comboBoxModificarCampo->currentIndex());
     ui->panelModificar->setEnabled(false);
 }
@@ -943,6 +1001,15 @@ void MainWindow::on_actionCrear_Indices_triggered()//no existe
 
 void MainWindow::on_actionReindexar_Archivos_triggered()
 {
+
+    ui->panelIndexar->setVisible(true);
+    ui->panelCampos->setVisible(false);
+    ui->tablaCampos->setVisible(false);
+    ui->panelRegistros->setVisible(false);
+    ui->panelModificar->setVisible(false);
+    ui->panelCruzar->setVisible(false);
+
+
     qDebug()<<"Entra a indexar";
     numCampoLlave = -1;
     listaCamposAbiertos.clear();
@@ -1146,6 +1213,14 @@ void MainWindow::Insercion(){
 
 void MainWindow::on_actionCruzar_Arbol_B_triggered()
 {
+    ui->panelCampos->setVisible(false);
+    ui->tablaCampos->setVisible(false);
+    ui->panelRegistros->setVisible(false);
+    ui->panelModificar->setVisible(false);
+    ui->panelCruzar->setVisible(true);
+    ui->panelIndexar->setVisible(false);
+
+
     file1.close();
     file2.close();
     campo1.clear();
