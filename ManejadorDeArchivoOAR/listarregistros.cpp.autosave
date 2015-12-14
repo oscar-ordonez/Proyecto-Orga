@@ -1,0 +1,34 @@
+#include "listarregistros.h"
+#include "ui_listarregistros.h"
+
+listarRegistros::listarRegistros(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::listarRegistros)
+{
+    ui->setupUi(this);
+}
+
+listarRegistros::~listarRegistros()
+{
+    delete ui;
+}
+
+void listarRegistros::llenarTabla(QList <Campo> listaCampos){
+   for(int i = 0; i < listaCampos.size(); i++){
+       int row = ui->tablaListarRegistros->rowCount();
+       ui->tablaListarRegistros->insertRow(row);
+       ui->tablaListarRegistros->setItem(row, 0, new QTableWidgetItem(listaCampos.at(i).getNombreCampo()));
+       ui->tablaListarRegistros->setItem(row, 1, new QTableWidgetItem(listaCampos.at(i).getTipoCampo()));
+       ui->tablaListarRegistros->setItem(row, 2, new QTableWidgetItem(QString::number(listaCampos.at(i).getTamanoCampo())));
+       if(listaCampos.at(i).getEsLlave()){
+           ui->tablaListar->setItem(row,3,new QTableWidgetItem("Si"));
+       }else{
+           ui->tablaListar->setItem(row,3,new QTableWidgetItem("No"));
+       }
+   }
+}
+
+void listarRegistros::on_cerrarListarRegistros_clicked()
+{
+    this->close();
+}

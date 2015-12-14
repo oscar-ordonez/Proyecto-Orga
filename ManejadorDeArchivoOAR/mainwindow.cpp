@@ -756,7 +756,7 @@ void MainWindow::on_comboBoxModificarCampo_currentIndexChanged(int index)
 }
 
 void MainWindow::exportXml() {
-    /*//si no hay campos o no hay registros entonces no se crea el archivo
+    //si no hay campos o no hay registros entonces no se crea el archivo
     if (this->current_open_file.listFields().size() == 0 || this->current_open_file.getAllIndexes().size() == 0) {
         this->lbl_status_bar->setText("There are no fields or records");
         return;
@@ -833,10 +833,10 @@ void MainWindow::exportXml() {
             xml_writer.writeEndDocument();
 
         }
-    }*/
+    }
 }
 void MainWindow::exportJson() {
-    /*//verifica si existen campos y registros
+    //verifica si existen campos y registros
     if (this->current_open_file.listFields().size() == 0 || this->current_open_file.getAllIndexes().size() == 0) {
         this->lbl_status_bar->setText("There are no fields or records");
         return;
@@ -917,7 +917,7 @@ void MainWindow::exportJson() {
             //se envia al archivo
             out << result;
         }
-    }*/
+    }
 }
 void MainWindow::exportExcel(){
     /*

@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     index.cpp \
     listarcampos.cpp \
     arbolb.cpp \
-    nodo.cpp
+    nodo.cpp \
+    listarregistros.cpp
     listarcampos.cpp
 
 HEADERS  += mainwindow.h \
@@ -28,12 +29,14 @@ HEADERS  += mainwindow.h \
     index.h \
     listarcampos.h \
     arbolb.h \
-    nodo.h
+    nodo.h \
+    listarregistros.h
     listarcampos.h
 
 FORMS    += mainwindow.ui \
     borrarcampos.ui \
-    listarcampos.ui
+    listarcampos.ui \
+    listarregistros.ui
 
 RESOURCES += \
     Recursos.qrc
