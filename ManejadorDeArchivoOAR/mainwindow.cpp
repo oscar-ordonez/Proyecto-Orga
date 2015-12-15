@@ -29,6 +29,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tablaCampos->setVisible(false);
     ui->panelRegistros->setVisible(false);
     ui->panelModificar->setVisible(false);
+    ui->panelCruzar->setVisible(false);
+    ui->panelIndexar->setVisible(false);
+
 }
 
 MainWindow::~MainWindow()
@@ -41,8 +44,12 @@ MainWindow::~MainWindow()
 void MainWindow::on_actionNuevo_Archivo_triggered()
 {
     //panels
-    ui->panelRegistros->setVisible(false);
     ui->panelCampos->setVisible(false);
+    ui->tablaCampos->setVisible(false);
+    ui->panelRegistros->setVisible(false);
+    ui->panelModificar->setVisible(false);
+    ui->panelCruzar->setVisible(false);
+    ui->panelIndexar->setVisible(false);
 
     //nuevo archivo
     QMessageBox::StandardButton msgbox;
@@ -86,6 +93,12 @@ void MainWindow::on_actionCrear_Campos_triggered()
     ui->panelCampos->setVisible(true);
     ui->panelCampos->setEnabled(true);
     ui->panelModificar->setEnabled(false);
+    ui->tablaCampos->setVisible(false);
+    ui->panelRegistros->setVisible(false);
+    ui->panelModificar->setVisible(false);
+    ui->panelCruzar->setVisible(false);
+    ui->panelIndexar->setVisible(false);
+
 }
 
 void MainWindow::on_abrirArchivo_clicked()
@@ -236,6 +249,10 @@ void MainWindow::on_actionBorrar_Campos_triggered()
     ui->modificarCampo->setEnabled(false);
     ui->eliminarCampo->setEnabled(true);
     ui->comboBoxModificarCampo->clear();
+
+    ui->panelCruzar->setVisible(false);
+    ui->panelIndexar->setVisible(false);
+
     /*for(int i = 0; i < ui->comboBoxModificarCampo->count(); i++){
         ui->comboBoxModificarCampo->removeItem(i);
     }*/
@@ -262,7 +279,7 @@ void MainWindow::on_actionSalvar_Archivo_triggered()
     if(archivoAbierto != "" && listaCampos.count() > 0){
     string nombreArchivo = (archivoAbierto + "Dato").toStdString();
     QString nombreIndice = (archivoAbierto + "Indx");
-    QString nombreIndiceArbol = (archivoAbierto + "IAbl");
+    QString nombreIndiceArbol = (archivoAbierto + "InAbl");
 
     ifstream archivo ("./Archivos/todosArchivos.ncr");
     bool existe = false;
@@ -350,6 +367,13 @@ void MainWindow::on_actionSalvar_Archivo_triggered()
     //panels
     ui->panelRegistros->setVisible(false);
     ui->panelCampos->setVisible(false);
+    ui->panelCampos->setVisible(false);
+    ui->tablaCampos->setVisible(false);
+    ui->panelRegistros->setVisible(false);
+    ui->panelModificar->setVisible(false);
+    ui->panelCruzar->setVisible(false);
+    ui->panelIndexar->setVisible(false);
+
 }
 
 void MainWindow::on_actionCerrar_Archivo_triggered()
@@ -357,6 +381,13 @@ void MainWindow::on_actionCerrar_Archivo_triggered()
     //panels
     ui->panelRegistros->setVisible(false);
     ui->panelCampos->setVisible(false);
+    ui->panelCampos->setVisible(false);
+    ui->tablaCampos->setVisible(false);
+    ui->panelRegistros->setVisible(false);
+    ui->panelModificar->setVisible(false);
+    ui->panelCruzar->setVisible(false);
+    ui->panelIndexar->setVisible(false);
+
 }
 
 void MainWindow::on_actionListar_Campos_triggered()
@@ -364,10 +395,17 @@ void MainWindow::on_actionListar_Campos_triggered()
     //panels
     ui->panelRegistros->setVisible(false);
     ui->panelCampos->setVisible(true);
+
+    ui->panelRegistros->setVisible(false);
+    ui->panelModificar->setVisible(false);
+    ui->panelCruzar->setVisible(false);
+    ui->panelIndexar->setVisible(false);
+
     ListarCampos listarCampos;
     listarCampos.llenarTabla(listaCampos);
     listarCampos.setModal(true);
     listarCampos.exec();
+
 }
 
 void MainWindow::on_actionModificar_Campos_triggered()
@@ -381,6 +419,10 @@ void MainWindow::on_actionModificar_Campos_triggered()
     ui->modificarCampo->setEnabled(true);
     ui->eliminarCampo->setEnabled(false);
     ui->comboBoxModificarCampo->clear();
+
+    ui->panelCruzar->setVisible(false);
+    ui->panelIndexar->setVisible(false);
+
     /*for(int i = 0; i < ui->comboBoxModificarCampo->count(); i++){
         ui->comboBoxModificarCampo->removeItem(i);
     }*/
@@ -406,6 +448,12 @@ void MainWindow::on_actionIntroducir_Registros_triggered()
     //panels
     ui->panelRegistros->setVisible(true);
     ui->panelCampos->setVisible(false);
+
+    ui->panelCampos->setVisible(false);
+    ui->tablaCampos->setVisible(false);
+    ui->panelModificar->setVisible(false);
+    ui->panelCruzar->setVisible(false);
+    ui->panelIndexar->setVisible(false);
 
     ui->datoRegistro->setVisible(true);
     ui->datoRegistroDec->setVisible(false);
@@ -700,6 +748,11 @@ void MainWindow::on_siguienteRegistro_clicked()
     }
 }
 void MainWindow::on_modificarCampo_clicked() {
+    ui->panelRegistros->setVisible(false);
+    ui->panelCruzar->setVisible(false);
+    ui->panelIndexar->setVisible(false);
+
+
     bool verificar = false;
     for(int i = 0; i < listaCampos.size(); i++){
         if(listaCampos.at(i).getEsLlave()){
@@ -728,6 +781,11 @@ void MainWindow::on_modificarCampo_clicked() {
 
 void MainWindow::on_eliminarCampo_clicked()
 {
+    ui->panelRegistros->setVisible(false);
+    ui->panelCruzar->setVisible(false);
+    ui->panelIndexar->setVisible(false);
+
+
     listaCampos.removeAt(ui->comboBoxModificarCampo->currentIndex());
     ui->panelModificar->setEnabled(false);
 }
@@ -943,6 +1001,15 @@ void MainWindow::on_actionCrear_Indices_triggered()//no existe
 
 void MainWindow::on_actionReindexar_Archivos_triggered()
 {
+
+    ui->panelIndexar->setVisible(true);
+    ui->panelCampos->setVisible(false);
+    ui->tablaCampos->setVisible(false);
+    ui->panelRegistros->setVisible(false);
+    ui->panelModificar->setVisible(false);
+    ui->panelCruzar->setVisible(false);
+
+
     qDebug()<<"Entra a indexar";
     numCampoLlave = -1;
     listaCamposAbiertos.clear();
@@ -1069,9 +1136,9 @@ void MainWindow::on_botonIndexar_clicked()
         else
             Insercion();
 
-        QString nombreindicea = ui->comboBoxIndexar->currentText()+"I";
-        nombreindicea[nombreindicea.length()-5] = 'n',nombreindicea[nombreindicea.length()-4] = 'A';
-        nombreindicea[nombreindicea.length()-3] = 'b',nombreindicea[nombreindicea.length()-2] = 'l';
+        QString nombreindicea = ui->comboBoxIndexar->currentText()+"l";
+        nombreindicea[nombreindicea.length()-5] = 'I',nombreindicea[nombreindicea.length()-4] = 'n';
+        nombreindicea[nombreindicea.length()-3] = 'A',nombreindicea[nombreindicea.length()-2] = 'b';
         QFile filea(nombreindicea);
         if (!filea.open(QIODevice::ReadWrite | QIODevice::Text))
          return;
@@ -1146,6 +1213,14 @@ void MainWindow::Insercion(){
 
 void MainWindow::on_actionCruzar_Arbol_B_triggered()
 {
+    ui->panelCampos->setVisible(false);
+    ui->tablaCampos->setVisible(false);
+    ui->panelRegistros->setVisible(false);
+    ui->panelModificar->setVisible(false);
+    ui->panelCruzar->setVisible(true);
+    ui->panelIndexar->setVisible(false);
+
+
     file1.close();
     file2.close();
     campo1.clear();
@@ -1319,14 +1394,15 @@ void MainWindow::on_comboBoxCampoComun_activated(const QString &arg1)
          int cantr=0;
 
          if(campo1==false){
-             nombreindicea = file2.fileName()+"x";
+             nombreindicea = file2.fileName()+"l";
+             qDebug() << "File name: " << nombreindicea;
              cantr=this->campo2[columnaeliminar-this->campo1.count()].getTamanoCampo();
          }else{
-             nombreindicea = file1.fileName()+"x";
+             nombreindicea = file1.fileName()+"l";
              cantr=this->campo1[columnaeliminar-this->campo2.count()].getTamanoCampo();
          }//fin del else
-         nombreindicea[nombreindicea.length()-5] = 'b',nombreindicea[nombreindicea.length()-4] = 't';
-         nombreindicea[nombreindicea.length()-3] = 'i',nombreindicea[nombreindicea.length()-2] = 'd';
+         nombreindicea[nombreindicea.length()-5] = 'I',nombreindicea[nombreindicea.length()-4] = 'n';
+         nombreindicea[nombreindicea.length()-3] = 'A',nombreindicea[nombreindicea.length()-2] = 'b';
          QFile filea(nombreindicea);
          if (!filea.open(QIODevice::ReadWrite | QIODevice::Text))
           return;
@@ -1471,4 +1547,58 @@ void MainWindow::on_comboBoxCampoComun_activated(const QString &arg1)
                  i++;
             }//fin del else
           }//fin del while
+}
+
+void MainWindow::on_actionListar_Registros_triggered()
+{
+    qDebug() << "entro al metodo listar";
+    ui->panelRegistros->setVisible(true);
+
+    listaCamposAbiertos.clear();
+    ui->tablaRegistros->setEditTriggers(false);
+    for(int i=ui->tablaRegistros->rowCount()-1;i>=0;i--)
+        ui->tablaRegistros->removeRow(i);
+    for(int i=ui->tablaRegistros->columnCount();i>=0;i--)
+        ui->tablaRegistros->removeColumn(i);
+    QFile file (ui->comboBoxArchivosRegistros->currentText());
+    if (!file.open(QIODevice::ReadWrite | QIODevice::Text))
+        return;
+    QTextStream in(&file);
+    QString line;
+    while (!in.atEnd()) {
+        line = in.readLine();
+        if(line=="|")
+            break;
+        QStringList divisiones = line.split(" ");
+        bool lla =false;
+        if(divisiones[3]=="Sí")
+            lla=true;
+        listaCamposAbiertos.append(Campo(divisiones[0],divisiones[1],divisiones[2].toInt(),lla));
+    }//fin del while
+    for(int i=0;i<listaCamposAbiertos.count();i++){
+        ui->tablaRegistros->insertColumn(i);
+        if(listaCamposAbiertos[i].getNombreCampo().length()>listaCamposAbiertos[i].getTamanoCampo())
+            ui->tablaRegistros->setColumnWidth(i,listaCamposAbiertos[i].getNombreCampo().length()*10);
+        else
+            ui->tablaRegistros->setColumnWidth(i,listaCamposAbiertos[i].getTamanoCampo()*20);
+            ui->tablaRegistros->setHorizontalHeaderItem(i,new QTableWidgetItem(listaCamposAbiertos[i].getNombreCampo()));
+    }//fin del for
+    bool empezar = false;
+    while (!in.atEnd()) {
+        line = in.readLine();
+        if(empezar){
+            if(line[0]!='*'){
+                int rowc = ui->tablaRegistros->rowCount();
+                int camino=0;
+                ui->tablaRegistros->insertRow(rowc);
+                for(int o=0;o<listaCamposAbiertos.count();o++){
+                    ui->tablaRegistros->setItem(rowc,o,new QTableWidgetItem(line.mid(camino,listaCamposAbiertos[o].getTamanoCampo())));
+                    camino+=listaCamposAbiertos[o].getTamanoCampo();
+                }//fin del for
+            }
+        }
+        if(line=="$")
+           empezar = true;
+    }
+    file.close();
 }

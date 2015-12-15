@@ -94,6 +94,8 @@ private slots:
 
     void on_comboBoxCampoComun_activated(const QString &arg1);
 
+    void on_actionListar_Registros_triggered();
+
 private:
 
     QList<Campo> listaCampos;
