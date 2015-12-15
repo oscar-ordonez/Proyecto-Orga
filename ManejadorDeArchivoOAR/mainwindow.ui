@@ -390,7 +390,7 @@
       <string>N/A</string>
      </property>
     </widget>
-    <widget class="QTableWidget" name="tableWidget">
+    <widget class="QTableWidget" name="tablaRegistros">
      <property name="geometry">
       <rect>
        <x>340</x>

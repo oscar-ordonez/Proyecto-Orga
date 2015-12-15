@@ -1548,3 +1548,57 @@ void MainWindow::on_comboBoxCampoComun_activated(const QString &arg1)
             }//fin del else
           }//fin del while
 }
+
+void MainWindow::on_actionListar_Registros_triggered()
+{
+    qDebug() << "entro al metodo listar";
+    ui->panelRegistros->setVisible(true);
+
+    listaCamposAbiertos.clear();
+    ui->tablaRegistros->setEditTriggers(false);
+    for(int i=ui->tablaRegistros->rowCount()-1;i>=0;i--)
+        ui->tablaRegistros->removeRow(i);
+    for(int i=ui->tablaRegistros->columnCount();i>=0;i--)
+        ui->tablaRegistros->removeColumn(i);
+    QFile file (ui->comboBoxArchivosRegistros->currentText());
+    if (!file.open(QIODevice::ReadWrite | QIODevice::Text))
+        return;
+    QTextStream in(&file);
+    QString line;
+    while (!in.atEnd()) {
+        line = in.readLine();
+        if(line=="|")
+            break;
+        QStringList divisiones = line.split(" ");
+        bool lla =false;
+        if(divisiones[3]=="Sí")
+            lla=true;
+        listaCamposAbiertos.append(Campo(divisiones[0],divisiones[1],divisiones[2].toInt(),lla));
+    }//fin del while
+    for(int i=0;i<listaCamposAbiertos.count();i++){
+        ui->tablaRegistros->insertColumn(i);
+        if(listaCamposAbiertos[i].getNombreCampo().length()>listaCamposAbiertos[i].getTamanoCampo())
+            ui->tablaRegistros->setColumnWidth(i,listaCamposAbiertos[i].getNombreCampo().length()*10);
+        else
+            ui->tablaRegistros->setColumnWidth(i,listaCamposAbiertos[i].getTamanoCampo()*20);
+            ui->tablaRegistros->setHorizontalHeaderItem(i,new QTableWidgetItem(listaCamposAbiertos[i].getNombreCampo()));
+    }//fin del for
+    bool empezar = false;
+    while (!in.atEnd()) {
+        line = in.readLine();
+        if(empezar){
+            if(line[0]!='*'){
+                int rowc = ui->tablaRegistros->rowCount();
+                int camino=0;
+                ui->tablaRegistros->insertRow(rowc);
+                for(int o=0;o<listaCamposAbiertos.count();o++){
+                    ui->tablaRegistros->setItem(rowc,o,new QTableWidgetItem(line.mid(camino,listaCamposAbiertos[o].getTamanoCampo())));
+                    camino+=listaCamposAbiertos[o].getTamanoCampo();
+                }//fin del for
+            }
+        }
+        if(line=="$")
+           empezar = true;
+    }
+    file.close();
+}
